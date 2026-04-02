@@ -234,10 +234,10 @@ data_dokumentasi = pd.DataFrame({
 # NORMALISASI (ANTI ERROR STRING)
 # ======================
 df_filtered["Program"] = df_filtered["Program"].astype(str).str.lower().str.strip()
-data_dokumentasi["wilayah"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
+data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
 
 # ======================
-# FILTER SESUAI WILAYAH
+# FILTER SESUAI Program
 # ======================
 wilayah_aktif = df_filtered["Program"].unique()
 doc_filtered = data_dokumentasi[data_dokumentasi["Program"].isin(wilayah_aktif)]
