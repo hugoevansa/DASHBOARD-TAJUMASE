@@ -6,19 +6,26 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 
 # ======================
+# STYLE (BIAR COMPACT)
+# ======================
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 1rem;
+    padding-bottom: 0rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ======================
 # DUMMY DATABASE
 # ======================
 data_db = {
     "LEMBATA": {
         "2026": {
-            "Padi": [120, 150, 180, 200, 210, 220, 230, 240, 250, 260, 270, 300],
-            "Kokoa": [80, 90, 100, 120, 130, 140, 150, 155, 160, 170, 180, 200],
-            "Jagung": [60, 70, 80, 100, 110, 120, 130, 135, 140, 150, 160, 180],
-        },
-        "2025": {
-            "Padi": [100,120,140,160,170,180,190,200,210,220,230,250],
-            "Kokoa": [70,80,90,100,110,120,130,135,140,150,160,180],
-            "Jagung": [50,60,70,80,90,100,110,115,120,130,140,150],
+            "Padi": [120,150,180,200,210,220,230,240,250,260,270,300],
+            "Kokoa": [80,90,100,120,130,140,150,155,160,170,180,200],
+            "Jagung": [60,70,80,100,110,120,130,135,140,150,160,180],
         }
     },
     "RUTENG": {
@@ -26,11 +33,6 @@ data_db = {
             "Padi": [90,110,130,150,160,170,180,190,200,210,220,240],
             "Kokoa": [60,70,80,90,100,110,120,125,130,140,150,170],
             "Jagung": [40,50,60,70,80,90,100,105,110,120,130,140],
-        },
-        "2025": {
-            "Padi": [80,100,120,140,150,160,170,180,190,200,210,230],
-            "Kokoa": [50,60,70,80,90,100,110,115,120,130,140,160],
-            "Jagung": [30,40,50,60,70,80,90,95,100,110,120,130],
         }
     }
 }
@@ -40,117 +42,107 @@ bulan = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"
 # ======================
 # HEADER
 # ======================
-st.title("Dashboard Program Panen Rempah 🌾")
+with st.container():
+    col1, col2, col3, col4 = st.columns([2,1,1,1])
 
-col1, col2, col3 = st.columns(3)
+    with col1:
+        st.title("🌾 Dashboard Panen Rempah")
 
-with col1:
-    program = st.selectbox("Program", list(data_db.keys()))
+    with col2:
+        program = st.selectbox("Program", list(data_db.keys()))
 
-with col2:
-    tahun = st.selectbox("Tahun", list(data_db[program].keys()))
+    with col3:
+        tahun = st.selectbox("Tahun", list(data_db[program].keys()))
 
-with col3:
-    produk = st.selectbox("Produk", list(data_db[program][tahun].keys()))
-
-st.divider()
+    with col4:
+        produk = st.selectbox("Produk", list(data_db[program][tahun].keys()))
 
 # ======================
-# DATA AKTIF
+# DATA
 # ======================
 produksi = data_db[program][tahun][produk]
 
 total_panen = sum(produksi)
-anggaran = total_panen * 15000  # dummy harga per kg
-luas_lahan = total_panen / 20   # asumsi produktivitas
+anggaran = total_panen * 15000
+luas_lahan = total_panen / 20
 produktivitas = total_panen / luas_lahan
 
 # ======================
-# KPI
+# KPI (1 BARIS)
 # ======================
-kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+with st.container():
+    k1, k2, k3, k4 = st.columns(4)
 
-kpi1.metric("Anggaran Dikeluarkan", f"Rp {anggaran:,.0f}")
-kpi2.metric("Total Panen", f"{total_panen} Kg")
-kpi3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
-kpi4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
-
-st.divider()
-
-# ======================
-# TABLE + PIE
-# ======================
-left, right = st.columns([2,1])
-
-# tabel wilayah dummy
-wilayah_df = pd.DataFrame({
-    "Wilayah": ["Desa A", "Desa B", "Desa C", "Desa D"],
-    "Hasil (Kg)": [total_panen*0.3, total_panen*0.25, total_panen*0.2, total_panen*0.25],
-    "Petani": [120, 95, 80, 60]
-})
-
-with left:
-    st.subheader("Distribusi Wilayah")
-    st.dataframe(wilayah_df, use_container_width=True)
-
-# pie produk
-with right:
-    st.subheader("Komposisi Produk")
-
-    pie_df = pd.DataFrame({
-        "Produk": ["Padi","Kokoa","Jagung"],
-        "Nilai": [
-            sum(data_db[program][tahun]["Padi"]),
-            sum(data_db[program][tahun]["Kokoa"]),
-            sum(data_db[program][tahun]["Jagung"])
-        ]
-    })
-
-    fig, ax = plt.subplots()
-    ax.pie(pie_df["Nilai"], labels=pie_df["Produk"], autopct='%1.1f%%')
-    st.pyplot(fig)
-
-st.divider()
+    k1.metric("Anggaran", f"Rp {anggaran:,.0f}")
+    k2.metric("Total Panen", f"{total_panen} Kg")
+    k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
+    k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
 
 # ======================
-# CHART UTAMA (DIGANTI)
+# ROW 1 (TABLE + PIE)
 # ======================
-st.subheader("Produksi Bulanan (Kg)")
+with st.container():
+    c1, c2 = st.columns([2,1])
 
-df_chart = pd.DataFrame({
-    "Bulan": bulan,
-    produk: produksi
-})
+    # TABLE
+    with c1:
+        wilayah_df = pd.DataFrame({
+            "Wilayah": ["Desa A","Desa B","Desa C","Desa D"],
+            "Hasil (Kg)": [total_panen*0.3, total_panen*0.25, total_panen*0.2, total_panen*0.25],
+            "Petani": [120,95,80,60]
+        })
+        st.dataframe(wilayah_df, height=250, use_container_width=True)
 
-st.bar_chart(df_chart.set_index("Bulan"))
+    # PIE
+    with c2:
+        pie_df = pd.DataFrame({
+            "Produk": ["Padi","Kokoa","Jagung"],
+            "Nilai": [
+                sum(data_db[program][tahun]["Padi"]),
+                sum(data_db[program][tahun]["Kokoa"]),
+                sum(data_db[program][tahun]["Jagung"])
+            ]
+        })
+
+        fig, ax = plt.subplots(figsize=(4,4))
+        ax.pie(pie_df["Nilai"], labels=pie_df["Produk"], autopct='%1.1f%%')
+        ax.set_title("Komposisi")
+
+        st.pyplot(fig)
 
 # ======================
-# CHART TAMBAHAN
+# ROW 2 (SEMUA CHART SEJAJAR)
 # ======================
-c1, c2 = st.columns(2)
+with st.container():
+    c1, c2, c3 = st.columns(3)
 
-# perbandingan produk
-with c1:
-    st.subheader("Perbandingan Antar Produk")
+    # PRODUKSI BULANAN
+    with c1:
+        df = pd.DataFrame({
+            "Bulan": bulan,
+            "Produksi": produksi
+        })
+        st.subheader("Produksi Bulanan")
+        st.bar_chart(df.set_index("Bulan"), height=250)
 
-    compare_df = pd.DataFrame({
-        "Produk": ["Padi","Kokoa","Jagung"],
-        "Total": [
-            sum(data_db[program][tahun]["Padi"]),
-            sum(data_db[program][tahun]["Kokoa"]),
-            sum(data_db[program][tahun]["Jagung"])
-        ]
-    })
+    # PERBANDINGAN PRODUK
+    with c2:
+        compare_df = pd.DataFrame({
+            "Produk": ["Padi","Kokoa","Jagung"],
+            "Total": [
+                sum(data_db[program][tahun]["Padi"]),
+                sum(data_db[program][tahun]["Kokoa"]),
+                sum(data_db[program][tahun]["Jagung"])
+            ]
+        })
+        st.subheader("Perbandingan Produk")
+        st.bar_chart(compare_df.set_index("Produk"), height=250)
 
-    st.bar_chart(compare_df.set_index("Produk"))
-
-# efisiensi
-with c2:
-    st.subheader("Efisiensi Produksi (Kg/Ha)")
-
-    efisiensi_df = pd.DataFrame({
-        "Produk": ["Padi","Kokoa","Jagung"],
-        "Efisiensi": [20, 15, 12]
-    })
-
-    st.bar_chart(efisiensi_df.set_index("Produk"))
+    # EFISIENSI
+    with c3:
+        efisiensi_df = pd.DataFrame({
+            "Produk": ["Padi","Kokoa","Jagung"],
+            "Efisiensi": [20,15,12]
+        })
+        st.subheader("Efisiensi")
+        st.bar_chart(efisiensi_df.set_index("Produk"), height=250)
