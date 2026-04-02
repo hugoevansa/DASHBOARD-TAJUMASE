@@ -476,113 +476,113 @@ else:
 
         components.html(carousel_html, height=380)
 
-# ======================
-# PREP DATA (TAHUN)
-# ======================
-data_dokumentasi["tanggal"] = pd.to_datetime(data_dokumentasi["tanggal"])
-data_dokumentasi["Tahun"] = data_dokumentasi["tanggal"].dt.year.astype(int)
+# # ======================
+# # PREP DATA (TAHUN)
+# # ======================
+# data_dokumentasi["tanggal"] = pd.to_datetime(data_dokumentasi["tanggal"])
+# data_dokumentasi["Tahun"] = data_dokumentasi["tanggal"].dt.year.astype(int)
 
-# ======================
-# NORMALISASI
-# ======================
-df_filtered = df_filtered.copy()
-df_filtered["Program"] = df_filtered["Program"].astype(str).str.lower().str.strip()
-data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
+# # ======================
+# # NORMALISASI
+# # ======================
+# df_filtered = df_filtered.copy()
+# df_filtered["Program"] = df_filtered["Program"].astype(str).str.lower().str.strip()
+# data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
 
-# ======================
-# FILTER PROGRAM + TAHUN
-# ======================
-wilayah_aktif = df_filtered["Program"].unique()
+# # ======================
+# # FILTER PROGRAM + TAHUN
+# # ======================
+# wilayah_aktif = df_filtered["Program"].unique()
 
-doc_filtered = data_dokumentasi[
-    (data_dokumentasi["Program"].isin(wilayah_aktif)) &
-    (data_dokumentasi["Tahun"] == tahun)
-]
+# doc_filtered = data_dokumentasi[
+#     (data_dokumentasi["Program"].isin(wilayah_aktif)) &
+#     (data_dokumentasi["Tahun"] == tahun)
+# ]
 
-# ======================
-# CSS
-# ======================
-st.markdown("""
-<style>
-.wrapper {
-    position: relative;
-}
-.date-badge {
-    position: absolute;
-    bottom: 10px;
-    right: 12px;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-}
-</style>
-""", unsafe_allow_html=True)
+# # ======================
+# # CSS
+# # ======================
+# st.markdown("""
+# <style>
+# .wrapper {
+#     position: relative;
+# }
+# .date-badge {
+#     position: absolute;
+#     bottom: 10px;
+#     right: 12px;
+#     background: rgba(0,0,0,0.6);
+#     color: white;
+#     padding: 4px 10px;
+#     border-radius: 8px;
+#     font-size: 12px;
+# }
+# </style>
+# """, unsafe_allow_html=True)
 
-# ======================
-# DISPLAY SWIPE
-# ======================
-if doc_filtered.empty:
-    st.info("Tidak ada dokumentasi untuk filter ini")
-else:
-    total_docs = len(doc_filtered)
+# # ======================
+# # DISPLAY SWIPE
+# # ======================
+# if doc_filtered.empty:
+#     st.info("Tidak ada dokumentasi untuk filter ini")
+# else:
+#     total_docs = len(doc_filtered)
 
-    # FIX ERROR SLIDER
-    if total_docs <= 3:
-        start_idx = 0
-    else:
-        start_idx = st.slider(
-            "",
-            0,
-            total_docs - 3,
-            0,
-            label_visibility="collapsed"
-        )
+#     # FIX ERROR SLIDER
+#     if total_docs <= 3:
+#         start_idx = 0
+#     else:
+#         start_idx = st.slider(
+#             "",
+#             0,
+#             total_docs - 3,
+#             0,
+#             label_visibility="collapsed"
+#         )
 
-    visible_docs = doc_filtered.iloc[start_idx:start_idx+3]
+#     visible_docs = doc_filtered.iloc[start_idx:start_idx+3]
 
-    cols = st.columns(3)
+#     cols = st.columns(3)
 
-    for i in range(3):
-        with cols[i]:
-            if i < len(visible_docs):
-                r = visible_docs.iloc[i]
+#     for i in range(3):
+#         with cols[i]:
+#             if i < len(visible_docs):
+#                 r = visible_docs.iloc[i]
 
-                st.markdown(f"**{r['caption']}**")
+#                 st.markdown(f"**{r['caption']}**")
 
-                st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-                st.image(r["file"], use_container_width=True)
+#                 st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+#                 st.image(r["file"], use_container_width=True)
 
-                st.markdown(
-                    f'<div class="date-badge">{r["tanggal"].strftime("%d %b %Y")}</div>',
-                    unsafe_allow_html=True
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+#                 st.markdown(
+#                     f'<div class="date-badge">{r["tanggal"].strftime("%d %b %Y")}</div>',
+#                     unsafe_allow_html=True
+#                 )
+#                 st.markdown('</div>', unsafe_allow_html=True)
 
-            else:
-                st.empty()
+#             else:
+#                 st.empty()
 
-    # FIX 3 KOLOM
-    cols = st.columns(3)
+#     # FIX 3 KOLOM
+#     cols = st.columns(3)
 
-    for i in range(3):
-        with cols[i]:
-            if i < len(visible_docs):
-                r = visible_docs.iloc[i]
+#     for i in range(3):
+#         with cols[i]:
+#             if i < len(visible_docs):
+#                 r = visible_docs.iloc[i]
 
-                # JUDUL
-                st.markdown(f"**{r['caption']}**")
+#                 # JUDUL
+#                 st.markdown(f"**{r['caption']}**")
 
-                # IMAGE + BADGE
-                st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-                st.image(r["file"], use_container_width=True)
+#                 # IMAGE + BADGE
+#                 st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+#                 st.image(r["file"], use_container_width=True)
 
-                st.markdown(
-                    f'<div class="date-badge">{r["tanggal"].strftime("%d %b %Y")}</div>',
-                    unsafe_allow_html=True
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+#                 st.markdown(
+#                     f'<div class="date-badge">{r["tanggal"].strftime("%d %b %Y")}</div>',
+#                     unsafe_allow_html=True
+#                 )
+#                 st.markdown('</div>', unsafe_allow_html=True)
 
-            else:
-                st.empty()
+#             else:
+#                 st.empty()
