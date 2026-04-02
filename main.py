@@ -69,19 +69,34 @@ col1, col2, col3, col4 = st.columns([2,1,1,1])
 with col1:
     st.title("🌾 Dashboard Panen Rempah")
 
-# FILTER PROGRAM
+# ======================
+# FILTER PROGRAM (MAIN FILTER)
+# ======================
 with col2:
-    program = st.selectbox("Program", df["Program"].dropna().unique())
+    program_list = ["Semua Program"] + list(df["Program"].dropna().unique())
+    program = st.selectbox("Program", program_list)
 
-df_filtered = df[df["Program"] == program]
+if program != "Semua Program":
+    df_filtered = df[df["Program"] == program]
+else:
+    df_filtered = df.copy()
 
+# ======================
 # FILTER TAHUN
+# ======================
 with col3:
     tahun = st.selectbox("Tahun", sorted(df_filtered["Tahun"].dropna().unique()))
 
 df_filtered = df_filtered[df_filtered["Tahun"] == tahun]
 
-# FILTER PRODUK (dengan "Semua Produk")
+# ======================
+# SIMPAN DATA UNTUK PERBANDINGAN (PENTING)
+# ======================
+df_compare = df_filtered.copy()
+
+# ======================
+# FILTER PRODUK
+# ======================
 with col4:
     produk_list = ["Semua Produk"] + list(df_filtered["Produk"].dropna().unique())
     produk = st.selectbox("Produk", produk_list)
@@ -116,7 +131,7 @@ k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
 # ======================
 c1, c2, c3 = st.columns(3)
 
-# ===== BAR BULANAN =====
+# ===== BAR BULANAN (ikut produk) =====
 with c1:
     st.subheader("Produksi Bulanan")
 
@@ -139,16 +154,11 @@ with c1:
 
     st.plotly_chart(fig_bar, use_container_width=True)
 
-# ===== PIE =====
+# ===== PIE (tidak ikut filter produk) =====
 with c2:
     st.subheader("Komposisi Produk")
 
-    if produk == "Semua Produk":
-        pie_df = df_filtered.groupby("Produk", as_index=False)["Produksi"].sum()
-    else:
-        # fallback biar tetap meaningful
-        pie_df = df[(df["Program"] == program) & (df["Tahun"] == tahun)] \
-                    .groupby("Produk", as_index=False)["Produksi"].sum()
+    pie_df = df_compare.groupby("Produk", as_index=False)["Produksi"].sum()
 
     fig_pie = px.pie(
         pie_df,
@@ -166,15 +176,11 @@ with c2:
 
     st.plotly_chart(fig_pie, use_container_width=True)
 
-# ===== PERBANDINGAN =====
+# ===== PERBANDINGAN (tidak ikut filter produk) =====
 with c3:
     st.subheader("Perbandingan Produk")
 
-    if produk == "Semua Produk":
-        compare_df = df_filtered.groupby("Produk", as_index=False)["Produksi"].sum()
-    else:
-        compare_df = df[(df["Program"] == program) & (df["Tahun"] == tahun)] \
-                        .groupby("Produk", as_index=False)["Produksi"].sum()
+    compare_df = df_compare.groupby("Produk", as_index=False)["Produksi"].sum()
 
     fig_compare = px.bar(
         compare_df,
