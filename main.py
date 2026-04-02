@@ -91,6 +91,7 @@ with col3:
     tahun = st.selectbox("Tahun", sorted(df_filtered["Tahun"].dropna().unique()))
 
 df_filtered = df_filtered[df_filtered["Tahun"] == tahun]
+df_doc = df_filtered.copy()
 
 # ======================
 # SIMPAN DATA UNTUK PERBANDINGAN (PENTING)
@@ -274,7 +275,7 @@ data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower(
 # ======================
 # FILTER SESUAI PROGRAM + TAHUN
 # ======================
-program_aktif = df_filtered["Program"].unique()
+program_aktif = df_doc["Program"].unique()
 
 doc_filtered = data_dokumentasi[
     (data_dokumentasi["Program"].isin(program_aktif)) &
