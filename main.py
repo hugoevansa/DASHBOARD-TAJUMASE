@@ -212,7 +212,10 @@ st.subheader("Distribusi Wilayah Desa")
 wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
     "Produksi":"sum",
     "Petani":"sum",
-    "Luas_Lahan":"sum"
+    "Luas_Lahan":"sum",
+    "Pupuk Phonska":"sum",
+    "Pupuk Nitrea":"sum",
+    "Pupuk Urea":"sum"
 })
 
 st.dataframe(wilayah_df, height=220, use_container_width=True, hide_index=True)
