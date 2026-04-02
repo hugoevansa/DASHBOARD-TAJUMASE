@@ -315,14 +315,14 @@ else:
 
         cards_html += f"""
         <div class="doc-card">
+            <div class="doc-caption">{row["caption"]}</div>
+        
             <div class="doc-image-wrap">
                 <img src="{img_src}" class="doc-image"/>
                 <div class="doc-date">{tanggal_label}</div>
             </div>
-            <div class="doc-caption">{row["caption"]}</div>
         </div>
         """
-
     if cards_html.strip() == "":
         st.warning("File gambar dokumentasi tidak ditemukan. Pastikan path file benar.")
     else:
