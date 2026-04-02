@@ -214,17 +214,39 @@ wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
 st.dataframe(wilayah_df, height=220, use_container_width=True)
 
 # ======================
-# DOKUMENTASI (FIX)
+# DOKUMENTASI (DINAMIS SESUAI WILAYAH)
 # ======================
 st.markdown("## 📸 Dokumentasi")
 
-# CSS overlay
+# DATA DOKUMENTASI
+data_dokumentasi = pd.DataFrame({
+    "file": ["contoh 1.png", "contoh 2.png", "contoh 4.png"],
+    "wilayah": ["Lembata", "Lembata", "Ruteng"],
+    "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20"],
+    "caption": [
+        "Panen rempah di wilayah A",
+        "Distribusi hasil panen",
+        "Kegiatan petani lokal"
+    ]
+})
+
+# ======================
+# FILTER IKUT WILAYAH DASHBOARD
+# ======================
+if "Wilayah" in df_filtered.columns:
+    wilayah_aktif = df_filtered["Wilayah"].unique()
+    doc_filtered = data_dokumentasi[data_dokumentasi["wilayah"].isin(wilayah_aktif)]
+else:
+    doc_filtered = data_dokumentasi.copy()
+
+# ======================
+# CSS
+# ======================
 st.markdown("""
 <style>
 .wrapper {
     position: relative;
 }
-
 .date-badge {
     position: absolute;
     bottom: 10px;
@@ -238,26 +260,24 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+# ======================
+# TAMPILKAN DINAMIS
+# ======================
+cols = st.columns(3)
 
-with col1:
-    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-    st.image("contoh 1.png", use_container_width=True)
-    st.markdown('<div class="date-badge">12 Jan 2024</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.caption("Panen rempah di wilayah A")
+if doc_filtered.empty:
+    st.info("Tidak ada dokumentasi untuk wilayah ini")
+else:
+    for i, row in doc_filtered.iterrows():
+        col = cols[i % 3]
 
-with col2:
-    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-    st.image("contoh 2.png", use_container_width=True)
-    st.markdown('<div class="date-badge">15 Feb 2024</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.caption("Distribusi hasil panen")
-
-with col3:
-    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-    st.image("contoh 4.png", use_container_width=True)
-    st.markdown('<div class="date-badge">20 Mar 2024</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.caption("Kegiatan petani lokal")
+        with col:
+            st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+            st.image(row["file"], use_container_width=True)
+            st.markdown(
+                f'<div class="date-badge">{pd.to_datetime(row["tanggal"]).strftime("%d %b %Y")}</div>',
+                unsafe_allow_html=True
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.caption(row["caption"])
 
