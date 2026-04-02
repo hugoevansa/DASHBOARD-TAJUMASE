@@ -13,15 +13,11 @@ st.title("Dashboard Analytics")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.selectbox("Property name", ["GA Property 1", "GA Property 2"])
+    st.selectbox("Program", ["LEMBATA", "RUTENG"])
 with col2:
-    st.selectbox("Channel", ["All", "Organic", "Direct"])
+    st.selectbox("Tahun", ["2026", "2025", "2024"])
 with col3:
-    st.selectbox("Session source / medium", ["All", "Google", "Social"])
-with col4:
-    st.selectbox("Device category", ["All", "Mobile", "Desktop"])
-with col5:
-    st.selectbox("Country", ["Indonesia", "USA", "UK"])
+    st.selectbox("Produk", ["Padi", "Kokoa", "Jagung"])
 
 st.divider()
 
