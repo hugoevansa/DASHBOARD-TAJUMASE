@@ -214,14 +214,14 @@ wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
 st.dataframe(wilayah_df, height=220, use_container_width=True)
 
 # ======================
-# DOKUMENTASI (DINAMIS SESUAI WILAYAH)
+# DOKUMENTASI (FINAL FIX)
 # ======================
 st.markdown("## 📸 Dokumentasi")
 
 # DATA DOKUMENTASI
 data_dokumentasi = pd.DataFrame({
     "file": ["contoh 1.png", "contoh 2.png", "contoh 4.png"],
-    "Program": ["Lembata", "Lembata", "Ruteng"],
+    "wilayah": ["Lembata", "Lembata", "Ruteng"],
     "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20"],
     "caption": [
         "Panen rempah di wilayah A",
@@ -231,13 +231,16 @@ data_dokumentasi = pd.DataFrame({
 })
 
 # ======================
-# FILTER IKUT WILAYAH DASHBOARD
+# NORMALISASI (ANTI ERROR STRING)
 # ======================
-if "Program" in df_filtered.columns:
-    wilayah_aktif = df_filtered["Program"].unique()
-    doc_filtered = data_dokumentasi[data_dokumentasi["Program"].isin(wilayah_aktif)]
-else:
-    doc_filtered = data_dokumentasi.copy()
+df_filtered["Wilayah"] = df_filtered["Wilayah"].astype(str).str.lower().str.strip()
+data_dokumentasi["wilayah"] = data_dokumentasi["wilayah"].astype(str).str.lower().str.strip()
+
+# ======================
+# FILTER SESUAI WILAYAH
+# ======================
+wilayah_aktif = df_filtered["Wilayah"].unique()
+doc_filtered = data_dokumentasi[data_dokumentasi["wilayah"].isin(wilayah_aktif)]
 
 # ======================
 # CSS
@@ -261,23 +264,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ======================
-# TAMPILKAN DINAMIS
+# TAMPILAN DINAMIS (AUTO KIRI)
 # ======================
-cols = st.columns(3)
-
 if doc_filtered.empty:
-    st.info("Tidak ada dokumentasi untuk Program ini")
+    st.info("Tidak ada dokumentasi untuk wilayah ini")
 else:
-    for i, row in doc_filtered.iterrows():
-        col = cols[i % 3]
+    rows = [doc_filtered.iloc[i:i+3] for i in range(0, len(doc_filtered), 3)]
 
-        with col:
-            st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-            st.image(row["file"], use_container_width=True)
-            st.markdown(
-                f'<div class="date-badge">{pd.to_datetime(row["tanggal"]).strftime("%d %b %Y")}</div>',
-                unsafe_allow_html=True
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.caption(row["caption"])
+    for row_docs in rows:
+        cols = st.columns(len(row_docs))  # ⬅️ ini kunci supaya mulai dari kiri
 
+        for col, (_, r) in zip(cols, row_docs.iterrows()):
+            with col:
+                st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+                st.image(r["file"], use_container_width=True)
+                st.markdown(
+                    f'<div class="date-badge">{pd.to_datetime(r["tanggal"]).strftime("%d %b %Y")}</div>',
+                    unsafe_allow_html=True
+                )
+                st.markdown('</div>', unsafe_allow_html=True)
+                st.caption(r["caption"])
