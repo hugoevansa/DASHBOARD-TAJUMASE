@@ -69,11 +69,11 @@ col1, col2, col3, col4 = st.columns([2,1,1,1])
 with col1:
     st.title("🌾 Dashboard Panen Rempah")
 
-# FILTER PROGRAM
+# FILTER Wilayah
 with col2:
-    program = st.selectbox("Program", df["Program"].dropna().unique())
+    Wilayah = st.selectbox("Wilayah", df["Wilayah"].dropna().unique())
 
-df_filtered = df[df["Program"] == program]
+df_filtered = df[df["Wilayah"] == Wilayah]
 
 # FILTER TAHUN
 with col3:
@@ -81,11 +81,11 @@ with col3:
 
 df_filtered = df_filtered[df_filtered["Tahun"] == tahun]
 
-# FILTER PRODUK
+# FILTER Komoditas
 with col4:
-    produk = st.selectbox("Produk", df_filtered["Produk"].dropna().unique())
+    Komoditas = st.selectbox("Komoditas", df_filtered["Komoditas"].dropna().unique())
 
-df_filtered = df_filtered[df_filtered["Produk"] == produk]
+df_filtered = df_filtered[df_filtered["Komoditas"] == Komoditas]
 
 # ======================
 # HANDLE DATA KOSONG
@@ -97,18 +97,18 @@ if df_filtered.empty:
 # ======================
 # KPI
 # ======================
-total_panen = df_filtered["Produksi"].sum()
+total_panen = df_filtered["Komoditassi"].sum()
 anggaran = total_panen * 15000
 luas_lahan = df_filtered["Luas_Lahan"].sum()
 
-produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
+Komoditastivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
 
 k1, k2, k3, k4 = st.columns(4)
 
 k1.metric("Anggaran", f"Rp {anggaran:,.0f}")
 k2.metric("Total Panen", f"{total_panen:,.0f} Kg")
 k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
-k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
+k4.metric("Komoditastivitas", f"{Komoditastivitas:.1f} Kg/Ha")
 
 # ======================
 # CHART ROW
@@ -117,14 +117,14 @@ c1, c2, c3 = st.columns(3)
 
 # ===== BAR BULANAN =====
 with c1:
-    st.subheader("Produksi Bulanan")
+    st.subheader("Komoditassi Bulanan")
 
-    bulanan = df_filtered.groupby("Bulan", as_index=False)["Produksi"].sum()
+    bulanan = df_filtered.groupby("Bulan", as_index=False)["Komoditassi"].sum()
 
     fig_bar = px.bar(
         bulanan,
         x="Bulan",
-        y="Produksi",
+        y="Komoditassi",
         color_discrete_sequence=["#8da98d"]
     )
 
@@ -139,14 +139,14 @@ with c1:
 
 # ===== PIE =====
 with c2:
-    st.subheader("Komposisi Produk")
+    st.subheader("Komposisi Komoditas")
 
-    pie_df = df.groupby("Produk", as_index=False)["Produksi"].sum()
+    pie_df = df.groupby("Komoditas", as_index=False)["Komoditassi"].sum()
 
     fig_pie = px.pie(
         pie_df,
-        names="Produk",
-        values="Produksi",
+        names="Komoditas",
+        values="Komoditassi",
         hole=0.5,
         color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
     )
@@ -161,15 +161,15 @@ with c2:
 
 # ===== PERBANDINGAN =====
 with c3:
-    st.subheader("Perbandingan Produk")
+    st.subheader("Perbandingan Komoditas")
 
-    compare_df = df.groupby("Produk", as_index=False)["Produksi"].sum()
+    compare_df = df.groupby("Komoditas", as_index=False)["Komoditassi"].sum()
 
     fig_compare = px.bar(
         compare_df,
-        x="Produk",
-        y="Produksi",
-        color="Produk",
+        x="Komoditas",
+        y="Komoditassi",
+        color="Komoditas",
         color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
     )
 
@@ -189,7 +189,7 @@ with c3:
 st.subheader("Distribusi Wilayah Desa")
 
 wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
-    "Produksi":"sum",
+    "Komoditassi":"sum",
     "Petani":"sum",
     "Luas_Lahan":"sum"
 })
