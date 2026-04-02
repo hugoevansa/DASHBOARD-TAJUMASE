@@ -226,7 +226,10 @@ data_dokumentasi = pd.DataFrame({
     "caption": [
         "Panen Wilayah A",
         "Distribusi Hasil",
-        "Aktivitas Petani"
+        "Aktivitas Petani",
+        "Petani Sulteng",
+        "Giripurno Farm",
+        "Sumatera Sejahtera"
     ]
 })
 
