@@ -97,7 +97,7 @@ if df_filtered.empty:
 # ======================
 # KPI
 # ======================
-total_panen = df_filtered["Komoditassi"].sum()
+total_panen = df_filtered["Komoditas"].sum()
 anggaran = total_panen * 15000
 luas_lahan = df_filtered["Luas_Lahan"].sum()
 
@@ -117,14 +117,14 @@ c1, c2, c3 = st.columns(3)
 
 # ===== BAR BULANAN =====
 with c1:
-    st.subheader("Komoditassi Bulanan")
+    st.subheader("Komoditas Bulanan")
 
-    bulanan = df_filtered.groupby("Bulan", as_index=False)["Komoditassi"].sum()
+    bulanan = df_filtered.groupby("Bulan", as_index=False)["Komoditas"].sum()
 
     fig_bar = px.bar(
         bulanan,
         x="Bulan",
-        y="Komoditassi",
+        y="Komoditas",
         color_discrete_sequence=["#8da98d"]
     )
 
@@ -141,12 +141,12 @@ with c1:
 with c2:
     st.subheader("Komposisi Komoditas")
 
-    pie_df = df.groupby("Komoditas", as_index=False)["Komoditassi"].sum()
+    pie_df = df.groupby("Komoditas", as_index=False)["Komoditas"].sum()
 
     fig_pie = px.pie(
         pie_df,
         names="Komoditas",
-        values="Komoditassi",
+        values="Komoditas",
         hole=0.5,
         color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
     )
@@ -163,12 +163,12 @@ with c2:
 with c3:
     st.subheader("Perbandingan Komoditas")
 
-    compare_df = df.groupby("Komoditas", as_index=False)["Komoditassi"].sum()
+    compare_df = df.groupby("Komoditas", as_index=False)["Komoditas"].sum()
 
     fig_compare = px.bar(
         compare_df,
         x="Komoditas",
-        y="Komoditassi",
+        y="Komoditas",
         color="Komoditas",
         color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
     )
@@ -189,7 +189,7 @@ with c3:
 st.subheader("Distribusi Wilayah Desa")
 
 wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
-    "Komoditassi":"sum",
+    "Komoditas":"sum",
     "Petani":"sum",
     "Luas_Lahan":"sum"
 })
