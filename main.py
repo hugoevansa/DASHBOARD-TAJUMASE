@@ -101,7 +101,7 @@ total_panen = df_filtered["Komoditas"].sum()
 anggaran = total_panen * 15000
 luas_lahan = df_filtered["Luas_Lahan"].sum()
 
-Komoditastivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
+Produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
 
 k1, k2, k3, k4 = st.columns(4)
 
