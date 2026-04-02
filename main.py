@@ -221,7 +221,7 @@ st.markdown("## 📸 Dokumentasi")
 # DATA DOKUMENTASI
 data_dokumentasi = pd.DataFrame({
     "file": ["contoh 1.png", "contoh 2.png", "contoh 4.png"],
-    "wilayah": ["Lembata", "Lembata", "Ruteng"],
+    "Program": ["Lembata", "Lembata", "Ruteng"],
     "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20"],
     "caption": [
         "Panen rempah di wilayah A",
@@ -233,14 +233,14 @@ data_dokumentasi = pd.DataFrame({
 # ======================
 # NORMALISASI (ANTI ERROR STRING)
 # ======================
-df_filtered["Wilayah"] = df_filtered["Wilayah"].astype(str).str.lower().str.strip()
-data_dokumentasi["wilayah"] = data_dokumentasi["wilayah"].astype(str).str.lower().str.strip()
+df_filtered["Program"] = df_filtered["Program"].astype(str).str.lower().str.strip()
+data_dokumentasi["wilayah"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
 
 # ======================
 # FILTER SESUAI WILAYAH
 # ======================
-wilayah_aktif = df_filtered["Wilayah"].unique()
-doc_filtered = data_dokumentasi[data_dokumentasi["wilayah"].isin(wilayah_aktif)]
+wilayah_aktif = df_filtered["Program"].unique()
+doc_filtered = data_dokumentasi[data_dokumentasi["Program"].isin(wilayah_aktif)]
 
 # ======================
 # CSS
@@ -267,7 +267,7 @@ st.markdown("""
 # TAMPILAN DINAMIS (AUTO KIRI)
 # ======================
 if doc_filtered.empty:
-    st.info("Tidak ada dokumentasi untuk wilayah ini")
+    st.info("Tidak ada dokumentasi untuk Program ini")
 else:
     rows = [doc_filtered.iloc[i:i+3] for i in range(0, len(doc_filtered), 3)]
 
