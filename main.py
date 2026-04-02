@@ -224,10 +224,10 @@ st.markdown("## 📸 Dokumentasi")
 # DATA DOKUMENTASI
 data_dokumentasi = pd.DataFrame([
     {
+        "caption": "Panen Wilayah A",
         "file": "Dokumentasi/contoh 1.png",
         "Program": "Lembata",
-        "tanggal": "2025-01-12",
-        "caption": "Panen Wilayah A"
+        "tanggal": "2025-01-12"
     },
     {
         "file": "Dokumentasi/contoh 2.png",
