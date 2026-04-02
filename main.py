@@ -264,7 +264,7 @@ with col_img1:
     st.markdown("""
     <div class="image-card">
         <div class="image-container">
-            <img src="gambar1.png">
+            <img src="contoh 1.jpeg">
             <div class="image-date">12 Jan 2024</div>
         </div>
         <div class="image-caption">Panen rempah di wilayah A</div>
@@ -275,7 +275,7 @@ with col_img2:
     st.markdown("""
     <div class="image-card">
         <div class="image-container">
-            <img src="gambar2.png">
+            <img src="contoh 2.jpeg">
             <div class="image-date">15 Feb 2024</div>
         </div>
         <div class="image-caption">Distribusi hasil panen</div>
@@ -286,7 +286,7 @@ with col_img3:
     st.markdown("""
     <div class="image-card">
         <div class="image-container">
-            <img src="gambar3.png">
+            <img src="contoh 3.jpeg">
             <div class="image-date">20 Mar 2024</div>
         </div>
         <div class="image-caption">Kegiatan petani lokal</div>
