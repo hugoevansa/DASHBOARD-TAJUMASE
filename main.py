@@ -204,11 +204,6 @@ with c3:
 
     st.plotly_chart(fig_compare, use_container_width=True)
 
-#gambar
-st.subheader("Contoh Gambar")
-
-st.image("1.png", use_container_width=True)
-
 # ======================
 # WILAYAH
 # ======================
