@@ -28,9 +28,9 @@ h2, h3 {color:#6b8f71;}
 """, unsafe_allow_html=True)
 
 # ======================
-# LOAD DATA (GITHUB)
+# LOAD DATA
 # ======================
-data = pd.read_excel("data_panen.xlsx")
+df = pd.read_excel("data_panen.xlsx")
 
 # ======================
 # HEADER + FILTER
@@ -40,18 +40,21 @@ col1, col2, col3, col4 = st.columns([2,1,1,1])
 with col1:
     st.title("🌾 Dashboard Panen Rempah")
 
+# FILTER 1: PROGRAM
 with col2:
-    program = st.selectbox("Program", df["Program"].unique())
+    program = st.selectbox("Program", df["Program"].dropna().unique())
 
 df_filtered = df[df["Program"] == program]
 
+# FILTER 2: TAHUN
 with col3:
-    tahun = st.selectbox("Tahun", sorted(df_filtered["Tahun"].unique()))
+    tahun = st.selectbox("Tahun", sorted(df_filtered["Tahun"].dropna().unique()))
 
 df_filtered = df_filtered[df_filtered["Tahun"] == tahun]
 
+# FILTER 3: PRODUK
 with col4:
-    produk = st.selectbox("Produk", df_filtered["Produk"].unique())
+    produk = st.selectbox("Produk", df_filtered["Produk"].dropna().unique())
 
 df_filtered = df_filtered[df_filtered["Produk"] == produk]
 
@@ -61,12 +64,15 @@ df_filtered = df_filtered[df_filtered["Produk"] == produk]
 total_panen = df_filtered["Produksi"].sum()
 anggaran = total_panen * 15000
 luas_lahan = df_filtered["Luas_Lahan"].sum()
-produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
+
+produktivitas = 0
+if luas_lahan != 0:
+    produktivitas = total_panen / luas_lahan
 
 k1, k2, k3, k4 = st.columns(4)
 
 k1.metric("Anggaran", f"Rp {anggaran:,.0f}")
-k2.metric("Total Panen", f"{total_panen} Kg")
+k2.metric("Total Panen", f"{total_panen:,.0f} Kg")
 k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
 k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
 
@@ -79,7 +85,7 @@ c1, c2, c3 = st.columns(3)
 with c1:
     st.subheader("Produksi Bulanan")
 
-    bulanan = df_filtered.groupby("Bulan")["Produksi"].sum().reset_index()
+    bulanan = df_filtered.groupby("Bulan", as_index=False)["Produksi"].sum()
 
     fig_bar = px.bar(
         bulanan,
@@ -95,7 +101,7 @@ with c1:
 with c2:
     st.subheader("Komposisi Produk")
 
-    pie_df = df_filtered.groupby("Produk")["Produksi"].sum().reset_index()
+    pie_df = df_filtered.groupby("Produk", as_index=False)["Produksi"].sum()
 
     fig_pie = px.pie(
         pie_df,
@@ -112,7 +118,7 @@ with c2:
 with c3:
     st.subheader("Perbandingan Produk")
 
-    compare_df = df_filtered.groupby("Produk")["Produksi"].sum().reset_index()
+    compare_df = df_filtered.groupby("Produk", as_index=False)["Produksi"].sum()
 
     fig_compare = px.bar(
         compare_df,
@@ -130,10 +136,10 @@ with c3:
 # ======================
 st.subheader("Distribusi Wilayah Desa")
 
-wilayah_df = df_filtered.groupby("Wilayah").agg({
+wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
     "Produksi":"sum",
     "Petani":"sum",
     "Luas_Lahan":"sum"
-}).reset_index()
+})
 
 st.dataframe(wilayah_df, use_container_width=True)
