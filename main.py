@@ -108,7 +108,7 @@ k1, k2, k3, k4 = st.columns(4)
 k1.metric("Anggaran", f"Rp {anggaran:,.0f}")
 k2.metric("Total Panen", f"{total_panen:,.0f} Kg")
 k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
-k4.metric("Komoditastivitas", f"{Komoditastivitas:.1f} Kg/Ha")
+k4.metric("Produktivitas", f"{Produktivitas:.1f} Kg/Ha")
 
 # ======================
 # CHART ROW
