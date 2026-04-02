@@ -216,3 +216,7 @@ wilayah_df = pd.DataFrame({
 })
 
 st.dataframe(wilayah_df, height=220, use_container_width=True)
+
+st.subheader("Contoh Gambar")
+
+st.image("1.png", use_container_width=True)
