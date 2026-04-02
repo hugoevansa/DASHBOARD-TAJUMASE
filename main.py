@@ -214,38 +214,82 @@ wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
 st.dataframe(wilayah_df, height=220, use_container_width=True)
 
 # ======================
-# 📸 DOKUMENTASI LAPANGAN
+# DOKUMENTASI (GAMBAR + CAPTION + TANGGAL)
 # ======================
-st.markdown("---")
-st.subheader("📸 Dokumentasi Kegiatan")
+st.markdown("## 📸 Dokumentasi")
 
-# CONTAINER
-with st.container():
+# CSS
+st.markdown("""
+<style>
+.image-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
 
-    col1, col2 = st.columns([1,2])
+.image-container {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+}
 
-    # ===== UPLOAD FOTO =====
-    with col1:
-        uploaded_file = st.file_uploader(
-            "Upload Foto Dokumentasi",
-            type=["jpg", "jpeg", "png"]
-        )
+.image-container img {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
 
-        tanggal = st.date_input("Tanggal Dokumentasi")
+.image-date {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
 
-    # ===== CAPTION + PREVIEW =====
-    with col2:
-        caption = st.text_area(
-            "Deskripsi / Caption",
-            placeholder="Contoh: Kegiatan panen padi di Desa Sukamaju dengan hasil meningkat 20% dibanding bulan lalu..."
-        )
+.image-caption {
+    font-size: 14px;
+    color: #444;
+    padding-left: 4px;
+}
+</style>
+""", unsafe_allow_html=True)
 
-        # PREVIEW GAMBAR
-        if uploaded_file is not None:
-            st.image(uploaded_file, caption=caption if caption else "Preview Gambar", use_container_width=True)
-        else:
-            st.info("Belum ada gambar diupload")
+col_img1, col_img2, col_img3 = st.columns(3)
 
-    # ===== INFO TAMBAHAN =====
-    if uploaded_file is not None:
-        st.success(f"📅 Tanggal: {tanggal}")
+with col_img1:
+    st.markdown("""
+    <div class="image-card">
+        <div class="image-container">
+            <img src="gambar1.png">
+            <div class="image-date">12 Jan 2024</div>
+        </div>
+        <div class="image-caption">Panen rempah di wilayah A</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_img2:
+    st.markdown("""
+    <div class="image-card">
+        <div class="image-container">
+            <img src="gambar2.png">
+            <div class="image-date">15 Feb 2024</div>
+        </div>
+        <div class="image-caption">Distribusi hasil panen</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_img3:
+    st.markdown("""
+    <div class="image-card">
+        <div class="image-container">
+            <img src="gambar3.png">
+            <div class="image-date">20 Mar 2024</div>
+        </div>
+        <div class="image-caption">Kegiatan petani lokal</div>
+    </div>
+    """, unsafe_allow_html=True)
+
