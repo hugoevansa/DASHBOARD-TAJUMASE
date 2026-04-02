@@ -256,7 +256,7 @@ with col2:
 
 with col3:
     st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-    st.image("contoh 3.png", use_container_width=True)
+    st.image("contoh 4.png", use_container_width=True)
     st.markdown('<div class="date-badge">20 Mar 2024</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     st.caption("Kegiatan petani lokal")
