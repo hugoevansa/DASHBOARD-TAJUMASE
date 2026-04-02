@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
 
+# CONFIG
 st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 
 # ======================
-# STYLE COMPACT + CARD
+# STYLE (BIAR COMPACT)
 # ======================
 st.markdown("""
 <style>
@@ -22,7 +23,7 @@ div[data-testid="stMetric"] {
 """, unsafe_allow_html=True)
 
 # ======================
-# DATA
+# DATA DUMMY
 # ======================
 data_db = {
     "LEMBATA": {
@@ -80,11 +81,11 @@ k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
 k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
 
 # ======================
-# ROW CHART (SERAGAM)
+# CHART ROW (SEJAJAR FIX)
 # ======================
 c1, c2, c3 = st.columns(3)
 
-# ===== 1. PRODUKSI =====
+# ===== BAR PRODUKSI =====
 with c1:
     st.subheader("Produksi Bulanan")
 
@@ -93,9 +94,12 @@ with c1:
         "Produksi": produksi
     })
 
-    st.bar_chart(df.set_index("Bulan"), height=220)
+    fig_bar = px.bar(df, x="Bulan", y="Produksi")
+    fig_bar.update_layout(height=260, margin=dict(t=30, b=0))
 
-# ===== 2. PIE =====
+    st.plotly_chart(fig_bar, use_container_width=True)
+
+# ===== PIE =====
 with c2:
     st.subheader("Komposisi Produk")
 
@@ -108,13 +112,12 @@ with c2:
         ]
     })
 
-    fig, ax = plt.subplots(figsize=(3,3))  # kecil & kotak
-    ax.pie(pie_df["Nilai"], labels=pie_df["Produk"], autopct='%1.1f%%')
-    ax.set_aspect('equal')
+    fig_pie = px.pie(pie_df, names="Produk", values="Nilai", hole=0.4)
+    fig_pie.update_layout(height=260, margin=dict(t=30, b=0))
 
-    st.pyplot(fig)
+    st.plotly_chart(fig_pie, use_container_width=True)
 
-# ===== 3. PERBANDINGAN =====
+# ===== PERBANDINGAN =====
 with c3:
     st.subheader("Perbandingan Produk")
 
@@ -127,10 +130,13 @@ with c3:
         ]
     })
 
-    st.bar_chart(compare_df.set_index("Produk"), height=220)
+    fig_compare = px.bar(compare_df, x="Produk", y="Total", color="Produk")
+    fig_compare.update_layout(height=260, margin=dict(t=30, b=0))
+
+    st.plotly_chart(fig_compare, use_container_width=True)
 
 # ======================
-# WILAYAH (PINDAH KE BAWAH FULL WIDTH)
+# WILAYAH (FULL WIDTH)
 # ======================
 st.subheader("Distribusi Wilayah Desa")
 
@@ -140,4 +146,4 @@ wilayah_df = pd.DataFrame({
     "Petani": [120,95,80,60]
 })
 
-st.dataframe(wilayah_df, height=200, use_container_width=True)
+st.dataframe(wilayah_df, height=220, use_container_width=True)
