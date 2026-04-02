@@ -263,23 +263,24 @@ data_dokumentasi = pd.DataFrame([
 ])
 
 # ======================
-# PREP DATA
+# PREP DATA (FIX FINAL)
 # ======================
 data_dokumentasi["tanggal"] = pd.to_datetime(data_dokumentasi["tanggal"])
 data_dokumentasi["Tahun"] = data_dokumentasi["tanggal"].dt.year.astype(int)
 
-df_filtered = df_filtered.copy()
-df_filtered["Program"] = df_filtered["Program"].astype(str).str.lower().str.strip()
+# 🔥 NORMALISASI KEDUANYA (WAJIB!)
+df_doc = df_doc.copy()
+df_doc["Program"] = df_doc["Program"].astype(str).str.lower().str.strip()
 data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
 
 # ======================
-# FILTER SESUAI PROGRAM + TAHUN
+# FILTER SESUAI PROGRAM + TAHUN (TANPA PRODUK)
 # ======================
 program_aktif = df_doc["Program"].unique()
 
 doc_filtered = data_dokumentasi[
     (data_dokumentasi["Program"].isin(program_aktif)) &
-    (data_dokumentasi["Tahun"] == tahun)
+    (data_dokumentasi["Tahun"] == int(tahun))
 ].copy()
 
 # ======================
