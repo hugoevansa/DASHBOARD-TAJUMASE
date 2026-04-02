@@ -1,23 +1,26 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # CONFIG
-st.set_page_config(page_title="Dashboard Analytics", layout="wide")
+st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 
 # ======================
 # HEADER FILTER
 # ======================
-st.title("Dashboard Analytics")
+st.title("Dashboard Program Panen Rempah 🌾")
 
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.selectbox("Program", ["LEMBATA", "RUTENG"])
+    program = st.selectbox("Program", ["LEMBATA", "RUTENG"])
+
 with col2:
-    st.selectbox("Tahun", ["2026", "2025", "2024"])
+    tahun = st.selectbox("Tahun", ["2026", "2025", "2024"])
+
 with col3:
-    st.selectbox("Produk", ["Padi", "Kokoa", "Jagung"])
+    produk = st.selectbox("Produk", ["Padi", "Kokoa", "Jagung"])
 
 st.divider()
 
@@ -28,8 +31,8 @@ kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 
 kpi1.metric("Anggaran Dikeluarkan", "Rp. 301.242.589")
 kpi2.metric("Total Panen", "2045 Kg")
-# kpi3.metric("", "1.8M")
-# kpi4.metric("Avg. engagement time", "06:15")
+kpi3.metric("Luas Lahan", "120 Ha")
+kpi4.metric("Produktivitas", "17 Kg/Ha")
 
 st.divider()
 
@@ -38,35 +41,46 @@ st.divider()
 # ======================
 left, right = st.columns([2,1])
 
-# Dummy data table
+# Data panen per wilayah / metode
 data = pd.DataFrame({
-    "Channel": ["Organic Search", "Direct", "Referral", "Paid Search"],
-    "Sessions": [2800000, 1300000, 768000, 132000],
-    "Total users": [1900000, 581000, 278000, 63500],
-    "New users": [1500000, 268700, 41400, 24400],
-    "Conversions": [3300000, 4400000, 2400000, 461500]
+    "Wilayah": ["Desa A", "Desa B", "Desa C", "Desa D"],
+    "Hasil Panen (Kg)": [800, 500, 400, 345],
+    "Petani Terlibat": [120, 95, 80, 60],
+    "Luas Lahan (Ha)": [40, 30, 25, 25],
+    "Produktivitas (Kg/Ha)": [20, 16.6, 16, 13.8]
 })
 
 with left:
-    st.subheader("Channel Performance")
+    st.subheader(f"Distribusi Panen - {program}")
     st.dataframe(data, use_container_width=True)
 
+# PIE CHART (komposisi produk)
 with right:
-    st.subheader("Properties Breakdown")
+    st.subheader("Proporsi Jenis Panen")
+
     pie_data = pd.DataFrame({
-        "Property": ["GA Property 1", "GA Property 2", "GA Property 3"],
-        "Users": [67.1, 31.5, 1.4]
+        "Jenis": ["Padi", "Kokoa", "Jagung"],
+        "Persentase": [50, 30, 20]
     })
-    st.pyplot(pie_data.set_index("Property").plot.pie(y="Users", autopct='%1.1f%%').figure)
+
+    fig, ax = plt.subplots()
+    ax.pie(
+        pie_data["Persentase"],
+        labels=pie_data["Jenis"],
+        autopct='%1.1f%%'
+    )
+    ax.set_ylabel("")
+
+    st.pyplot(fig)
 
 st.divider()
 
 # ======================
 # LINE CHARTS
 # ======================
-st.subheader("Performance Trends")
+st.subheader("Tren Produksi Panen")
 
-dates = pd.date_range(start="2024-02-01", periods=100)
+dates = pd.date_range(start="2024-01-01", periods=100)
 
 def generate_series(base):
     return base + np.random.randn(100) * base * 0.05
@@ -74,37 +88,37 @@ def generate_series(base):
 chart1, chart2, chart3, chart4 = st.columns(4)
 
 with chart1:
-    st.caption("Sessions")
+    st.caption("Produksi Panen (Kg)")
     df = pd.DataFrame({
-        "Date": dates,
-        "GA Property 1": generate_series(300000),
-        "GA Property 2": generate_series(250000)
+        "Tanggal": dates,
+        "LEMBATA": generate_series(2000),
+        "RUTENG": generate_series(1500)
     })
-    st.line_chart(df.set_index("Date"))
+    st.line_chart(df.set_index("Tanggal"))
 
 with chart2:
-    st.caption("Total users")
+    st.caption("Jumlah Petani")
     df = pd.DataFrame({
-        "Date": dates,
-        "GA Property 1": generate_series(200000),
-        "GA Property 2": generate_series(150000)
+        "Tanggal": dates,
+        "LEMBATA": generate_series(120),
+        "RUTENG": generate_series(90)
     })
-    st.line_chart(df.set_index("Date"))
+    st.line_chart(df.set_index("Tanggal"))
 
 with chart3:
-    st.caption("New users")
+    st.caption("Luas Lahan (Ha)")
     df = pd.DataFrame({
-        "Date": dates,
-        "GA Property 1": generate_series(120000),
-        "GA Property 2": generate_series(80000)
+        "Tanggal": dates,
+        "LEMBATA": generate_series(100),
+        "RUTENG": generate_series(80)
     })
-    st.line_chart(df.set_index("Date"))
+    st.line_chart(df.set_index("Tanggal"))
 
 with chart4:
-    st.caption("Conversions")
+    st.caption("Produktivitas (Kg/Ha)")
     df = pd.DataFrame({
-        "Date": dates,
-        "GA Property 1": generate_series(700000),
-        "GA Property 2": generate_series(600000)
+        "Tanggal": dates,
+        "LEMBATA": generate_series(18),
+        "RUTENG": generate_series(15)
     })
-    st.line_chart(df.set_index("Date"))
+    st.line_chart(df.set_index("Tanggal"))
