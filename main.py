@@ -59,7 +59,7 @@ div[data-baseweb="select"] {
 # ======================
 # LOAD DATA (LOGIC KODINGAN 2)
 # ======================
-df = pd.read_excel("data_panen.xlsx")
+df = pd.read_excel("data_panen_dummy.xlsx")
 
 # ======================
 # HEADER + FILTER
