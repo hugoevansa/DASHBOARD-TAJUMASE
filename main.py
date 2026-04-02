@@ -214,34 +214,20 @@ wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
 st.dataframe(wilayah_df, height=220, use_container_width=True)
 
 # ======================
-# DOKUMENTASI (GAMBAR + CAPTION + TANGGAL)
+# DOKUMENTASI (FIX)
 # ======================
 st.markdown("## 📸 Dokumentasi")
 
-# CSS
+# CSS overlay
 st.markdown("""
 <style>
-.image-card {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.image-container {
+.wrapper {
     position: relative;
-    border-radius: 14px;
-    overflow: hidden;
 }
 
-.image-container img {
-    width: 100%;
-    border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.image-date {
+.date-badge {
     position: absolute;
-    bottom: 8px;
+    bottom: 10px;
     right: 12px;
     background: rgba(0,0,0,0.6);
     color: white;
@@ -249,47 +235,29 @@ st.markdown("""
     border-radius: 8px;
     font-size: 12px;
 }
-
-.image-caption {
-    font-size: 14px;
-    color: #444;
-    padding-left: 4px;
-}
 </style>
 """, unsafe_allow_html=True)
 
-col_img1, col_img2, col_img3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 
-with col_img1:
-    st.markdown("""
-    <div class="image-card">
-        <div class="image-container">
-            <img src="contoh 1.png">
-            <div class="image-date">12 Jan 2024</div>
-        </div>
-        <div class="image-caption">Panen rempah di wilayah A</div>
-    </div>
-    """, unsafe_allow_html=True)
+with col1:
+    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+    st.image("contoh 1.png", use_container_width=True)
+    st.markdown('<div class="date-badge">12 Jan 2024</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.caption("Panen rempah di wilayah A")
 
-with col_img2:
-    st.markdown("""
-    <div class="image-card">
-        <div class="image-container">
-            <img src="contoh 2.png">
-            <div class="image-date">15 Feb 2024</div>
-        </div>
-        <div class="image-caption">Distribusi hasil panen</div>
-    </div>
-    """, unsafe_allow_html=True)
+with col2:
+    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+    st.image("contoh 2.png", use_container_width=True)
+    st.markdown('<div class="date-badge">15 Feb 2024</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.caption("Distribusi hasil panen")
 
-with col_img3:
-    st.markdown("""
-    <div class="image-card">
-        <div class="image-container">
-            <img src="contoh 3.png">
-            <div class="image-date">20 Mar 2024</div>
-        </div>
-        <div class="image-caption">Kegiatan petani lokal</div>
-    </div>
-    """, unsafe_allow_html=True)
+with col3:
+    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+    st.image("contoh 3.png", use_container_width=True)
+    st.markdown('<div class="date-badge">20 Mar 2024</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.caption("Kegiatan petani lokal")
 
