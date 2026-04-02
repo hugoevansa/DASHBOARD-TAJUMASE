@@ -223,6 +223,10 @@ data_dokumentasi = pd.DataFrame({
     "file": ["Dokumentasi/contoh 1.png", "Dokumentasi/contoh 2.png", "Dokumentasi/contoh 4.png"],
     "Program": ["Lembata", "Lembata", "Ruteng"],
     "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20"],
+    "caption": [
+        "Panen Wilayah A",
+        "Distribusi Hasil",
+        "Aktivitas Petani"
     ]
 })
 
