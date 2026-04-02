@@ -26,10 +26,10 @@ st.divider()
 # ======================
 kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 
-kpi1.metric("Sessions", "5.1M")
-kpi2.metric("Total users", "2.9M")
-kpi3.metric("New users", "1.8M")
-kpi4.metric("Avg. engagement time", "06:15")
+kpi1.metric("Anggaran Dikeluarkan", "Rp. 301.242.589")
+kpi2.metric("Total Panen", "2045 Kg")
+# kpi3.metric("", "1.8M")
+# kpi4.metric("Avg. engagement time", "06:15")
 
 st.divider()
 
