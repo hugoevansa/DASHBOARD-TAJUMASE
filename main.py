@@ -292,16 +292,40 @@ if doc_filtered.empty:
 else:
     total_docs = len(doc_filtered)
 
-    # SLIDER NAVIGASI (SWIPE)
-    start_idx = st.slider(
-        "",
-        0,
-        max(0, total_docs - 3),
-        0,
-        label_visibility="collapsed"
-    )
+    # FIX ERROR SLIDER
+    if total_docs <= 3:
+        start_idx = 0
+    else:
+        start_idx = st.slider(
+            "",
+            0,
+            total_docs - 3,
+            0,
+            label_visibility="collapsed"
+        )
 
     visible_docs = doc_filtered.iloc[start_idx:start_idx+3]
+
+    cols = st.columns(3)
+
+    for i in range(3):
+        with cols[i]:
+            if i < len(visible_docs):
+                r = visible_docs.iloc[i]
+
+                st.markdown(f"**{r['caption']}**")
+
+                st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+                st.image(r["file"], use_container_width=True)
+
+                st.markdown(
+                    f'<div class="date-badge">{r["tanggal"].strftime("%d %b %Y")}</div>',
+                    unsafe_allow_html=True
+                )
+                st.markdown('</div>', unsafe_allow_html=True)
+
+            else:
+                st.empty()
 
     # FIX 3 KOLOM
     cols = st.columns(3)
