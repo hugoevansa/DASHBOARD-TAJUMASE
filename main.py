@@ -28,123 +28,112 @@ h2, h3 {color:#6b8f71;}
 """, unsafe_allow_html=True)
 
 # ======================
-# LOAD DATA FROM GITHUB
+# LOAD DATA (GITHUB)
 # ======================
-@st.cache_data
-def load_data():
-    url = "https://raw.githubusercontent.com/USERNAME/REPO/main/data_panen.xlsx"
-    return pd.read_excel(url)
+data = pd.read_excel("data_panen.xlsx")
 
-df = load_data()
+# ======================
+# HEADER + FILTER
+# ======================
+col1, col2, col3, col4 = st.columns([2,1,1,1])
 
-if uploaded_file:
-    df = pd.read_excel(uploaded_file)
+with col1:
+    st.title("🌾 Dashboard Panen Rempah")
 
-    # ======================
-    # FILTER
-    # ======================
-    col1, col2, col3, col4 = st.columns([2,1,1,1])
+with col2:
+    program = st.selectbox("Program", df["Program"].unique())
 
-    with col1:
-        st.title("🌾 Dashboard Panen Rempah")
+df_filtered = df[df["Program"] == program]
 
-    with col2:
-        program = st.selectbox("Program", df["Program"].unique())
+with col3:
+    tahun = st.selectbox("Tahun", sorted(df_filtered["Tahun"].unique()))
 
-    df = df[df["Program"] == program]
+df_filtered = df_filtered[df_filtered["Tahun"] == tahun]
 
-    with col3:
-        tahun = st.selectbox("Tahun", sorted(df["Tahun"].unique()))
+with col4:
+    produk = st.selectbox("Produk", df_filtered["Produk"].unique())
 
-    df = df[df["Tahun"] == tahun]
+df_filtered = df_filtered[df_filtered["Produk"] == produk]
 
-    with col4:
-        produk = st.selectbox("Produk", df["Produk"].unique())
+# ======================
+# KPI
+# ======================
+total_panen = df_filtered["Produksi"].sum()
+anggaran = total_panen * 15000
+luas_lahan = df_filtered["Luas_Lahan"].sum()
+produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
 
-    df = df[df["Produk"] == produk]
+k1, k2, k3, k4 = st.columns(4)
 
-    # ======================
-    # KPI
-    # ======================
-    total_panen = df["Produksi"].sum()
-    anggaran = total_panen * 15000
-    luas_lahan = df["Luas_Lahan"].sum()
-    produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
+k1.metric("Anggaran", f"Rp {anggaran:,.0f}")
+k2.metric("Total Panen", f"{total_panen} Kg")
+k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
+k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
 
-    k1, k2, k3, k4 = st.columns(4)
+# ======================
+# CHART
+# ======================
+c1, c2, c3 = st.columns(3)
 
-    k1.metric("Anggaran", f"Rp {anggaran:,.0f}")
-    k2.metric("Total Panen", f"{total_panen} Kg")
-    k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
-    k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
+# BAR BULANAN
+with c1:
+    st.subheader("Produksi Bulanan")
 
-    # ======================
-    # CHART
-    # ======================
-    c1, c2, c3 = st.columns(3)
+    bulanan = df_filtered.groupby("Bulan")["Produksi"].sum().reset_index()
 
-    # BAR BULANAN
-    with c1:
-        st.subheader("Produksi Bulanan")
+    fig_bar = px.bar(
+        bulanan,
+        x="Bulan",
+        y="Produksi",
+        color_discrete_sequence=["#8da98d"]
+    )
 
-        bulanan = df.groupby("Bulan")["Produksi"].sum().reset_index()
+    fig_bar.update_layout(height=260, plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig_bar, use_container_width=True)
 
-        fig_bar = px.bar(
-            bulanan,
-            x="Bulan",
-            y="Produksi",
-            color_discrete_sequence=["#8da98d"]
-        )
+# PIE
+with c2:
+    st.subheader("Komposisi Produk")
 
-        fig_bar.update_layout(height=260, plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig_bar, use_container_width=True)
+    pie_df = df_filtered.groupby("Produk")["Produksi"].sum().reset_index()
 
-    # PIE
-    with c2:
-        st.subheader("Komposisi Produk")
+    fig_pie = px.pie(
+        pie_df,
+        names="Produk",
+        values="Produksi",
+        hole=0.5,
+        color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
+    )
 
-        pie_df = df.groupby("Produk")["Produksi"].sum().reset_index()
+    fig_pie.update_layout(height=260)
+    st.plotly_chart(fig_pie, use_container_width=True)
 
-        fig_pie = px.pie(
-            pie_df,
-            names="Produk",
-            values="Produksi",
-            hole=0.5,
-            color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
-        )
+# PERBANDINGAN
+with c3:
+    st.subheader("Perbandingan Produk")
 
-        fig_pie.update_layout(height=260)
-        st.plotly_chart(fig_pie, use_container_width=True)
+    compare_df = df_filtered.groupby("Produk")["Produksi"].sum().reset_index()
 
-    # PERBANDINGAN
-    with c3:
-        st.subheader("Perbandingan Produk")
+    fig_compare = px.bar(
+        compare_df,
+        x="Produk",
+        y="Produksi",
+        color="Produk",
+        color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
+    )
 
-        compare_df = df.groupby("Produk")["Produksi"].sum().reset_index()
+    fig_compare.update_layout(height=260, showlegend=False)
+    st.plotly_chart(fig_compare, use_container_width=True)
 
-        fig_compare = px.bar(
-            compare_df,
-            x="Produk",
-            y="Produksi",
-            color="Produk",
-            color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7"]
-        )
+# ======================
+# WILAYAH
+# ======================
+st.subheader("Distribusi Wilayah Desa")
 
-        fig_compare.update_layout(height=260, showlegend=False)
-        st.plotly_chart(fig_compare, use_container_width=True)
+wilayah_df = df_filtered.groupby("Wilayah").agg({
+    "Produksi":"sum",
+    "Petani":"sum",
+    "Luas_Lahan":"sum"
+}).reset_index()
 
-    # ======================
-    # WILAYAH
-    # ======================
-    st.subheader("Distribusi Wilayah Desa")
-
-    wilayah_df = df.groupby("Wilayah").agg({
-        "Produksi":"sum",
-        "Petani":"sum",
-        "Luas_Lahan":"sum"
-    }).reset_index()
-
-    st.dataframe(wilayah_df, use_container_width=True)
-
-else:
-    st.warning("Silakan upload file Excel terlebih dahulu.")
+st.dataframe(wilayah_df, use_container_width=True)
