@@ -223,10 +223,6 @@ data_dokumentasi = pd.DataFrame({
     "file": ["Dokumentasi/contoh 1.png", "Dokumentasi/contoh 2.png", "Dokumentasi/contoh 4.png"],
     "Program": ["Lembata", "Lembata", "Ruteng"],
     "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20"],
-    "caption": [
-        "Panen rempah di wilayah A",
-        "Distribusi hasil panen",
-        "Kegiatan petani lokal"
     ]
 })
 
@@ -269,23 +265,28 @@ st.markdown("""
 if doc_filtered.empty:
     st.info("Tidak ada dokumentasi untuk Program ini")
 else:
-    rows = rows = [doc_filtered.iloc[i:i+3] for i in range(0, len(doc_filtered), 3)]
+    rows = [doc_filtered.iloc[i:i+3] for i in range(0, len(doc_filtered), 3)]
 
-for row_docs in rows:
-    cols = st.columns(3)  # FIX 3 kolom
+    for row_docs in rows:
+        cols = st.columns(3)
 
-    for i in range(3):
-        with cols[i]:
-            if i < len(row_docs):
-                r = row_docs.iloc[i]
+        for i in range(3):
+            with cols[i]:
+                if i < len(row_docs):
+                    r = row_docs.iloc[i]
 
-                st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-                st.image(r["file"], use_container_width=True)
-                st.markdown(
-                    f'<div class="date-badge">{pd.to_datetime(r["tanggal"]).strftime("%d %b %Y")}</div>',
-                    unsafe_allow_html=True
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
-                st.caption(r["caption"])
-            else:
-                st.empty()  # biar kolom kosong tapi ukuran tetap
+                    # 🟢 JUDUL DOKUMENTASI
+                    st.markdown(f"**{r['caption']}**")
+
+                    # 🟢 WRAPPER IMAGE
+                    st.markdown('<div class="wrapper">', unsafe_allow_html=True)
+                    st.image(r["file"], use_container_width=True)
+
+                    st.markdown(
+                        f'<div class="date-badge">{pd.to_datetime(r["tanggal"]).strftime("%d %b %Y")}</div>',
+                        unsafe_allow_html=True
+                    )
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                else:
+                    st.empty()
