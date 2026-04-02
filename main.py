@@ -221,7 +221,7 @@ st.markdown("## 📸 Dokumentasi")
 # DATA DOKUMENTASI
 data_dokumentasi = pd.DataFrame({
     "file": ["contoh 1.png", "contoh 2.png", "contoh 4.png"],
-    "wilayah": ["Lembata", "Lembata", "Ruteng"],
+    "Program": ["Lembata", "Lembata", "Ruteng"],
     "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20"],
     "caption": [
         "Panen rempah di wilayah A",
@@ -233,9 +233,9 @@ data_dokumentasi = pd.DataFrame({
 # ======================
 # FILTER IKUT WILAYAH DASHBOARD
 # ======================
-if "Wilayah" in df_filtered.columns:
-    wilayah_aktif = df_filtered["Wilayah"].unique()
-    doc_filtered = data_dokumentasi[data_dokumentasi["wilayah"].isin(wilayah_aktif)]
+if "Program" in df_filtered.columns:
+    wilayah_aktif = df_filtered["Program"].unique()
+    doc_filtered = data_dokumentasi[data_dokumentasi["Program"].isin(wilayah_aktif)]
 else:
     doc_filtered = data_dokumentasi.copy()
 
@@ -266,7 +266,7 @@ st.markdown("""
 cols = st.columns(3)
 
 if doc_filtered.empty:
-    st.info("Tidak ada dokumentasi untuk wilayah ini")
+    st.info("Tidak ada dokumentasi untuk Program ini")
 else:
     for i, row in doc_filtered.iterrows():
         col = cols[i % 3]
