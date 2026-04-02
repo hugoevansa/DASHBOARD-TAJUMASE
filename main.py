@@ -6,7 +6,7 @@ import plotly.express as px
 st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 
 # ======================
-# 🎨 SAGE THEME STYLE (AMBIL DARI KODINGAN 1)
+# 🎨 SAGE THEME STYLE
 # ======================
 st.markdown("""
 <style>
@@ -57,7 +57,7 @@ div[data-baseweb="select"] {
 """, unsafe_allow_html=True)
 
 # ======================
-# LOAD DATA (LOGIC KODINGAN 2)
+# LOAD DATA
 # ======================
 df = pd.read_excel("data_panen_dummy.xlsx")
 
@@ -81,11 +81,13 @@ with col3:
 
 df_filtered = df_filtered[df_filtered["Tahun"] == tahun]
 
-# FILTER PRODUK
+# FILTER PRODUK (dengan "Semua Produk")
 with col4:
-    produk = st.selectbox("Produk", df_filtered["Produk"].dropna().unique())
+    produk_list = ["Semua Produk"] + list(df_filtered["Produk"].dropna().unique())
+    produk = st.selectbox("Produk", produk_list)
 
-df_filtered = df_filtered[df_filtered["Produk"] == produk]
+if produk != "Semua Produk":
+    df_filtered = df_filtered[df_filtered["Produk"] == produk]
 
 # ======================
 # HANDLE DATA KOSONG
@@ -100,7 +102,6 @@ if df_filtered.empty:
 total_panen = df_filtered["Produksi"].sum()
 anggaran = total_panen * 15000
 luas_lahan = df_filtered["Luas_Lahan"].sum()
-
 produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
 
 k1, k2, k3, k4 = st.columns(4)
@@ -132,7 +133,8 @@ with c1:
         height=260,
         margin=dict(t=30, b=0),
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        paper_bgcolor='rgba(0,0,0,0)',
+        hovermode="x unified"
     )
 
     st.plotly_chart(fig_bar, use_container_width=True)
@@ -141,7 +143,12 @@ with c1:
 with c2:
     st.subheader("Komposisi Produk")
 
-    pie_df = df.groupby("Produk", as_index=False)["Produksi"].sum()
+    if produk == "Semua Produk":
+        pie_df = df_filtered.groupby("Produk", as_index=False)["Produksi"].sum()
+    else:
+        # fallback biar tetap meaningful
+        pie_df = df[(df["Program"] == program) & (df["Tahun"] == tahun)] \
+                    .groupby("Produk", as_index=False)["Produksi"].sum()
 
     fig_pie = px.pie(
         pie_df,
@@ -163,7 +170,11 @@ with c2:
 with c3:
     st.subheader("Perbandingan Produk")
 
-    compare_df = df.groupby("Produk", as_index=False)["Produksi"].sum()
+    if produk == "Semua Produk":
+        compare_df = df_filtered.groupby("Produk", as_index=False)["Produksi"].sum()
+    else:
+        compare_df = df[(df["Program"] == program) & (df["Tahun"] == tahun)] \
+                        .groupby("Produk", as_index=False)["Produksi"].sum()
 
     fig_compare = px.bar(
         compare_df,
