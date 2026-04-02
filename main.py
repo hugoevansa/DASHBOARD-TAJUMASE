@@ -212,3 +212,40 @@ wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
 })
 
 st.dataframe(wilayah_df, height=220, use_container_width=True)
+
+# ======================
+# 📸 DOKUMENTASI LAPANGAN
+# ======================
+st.markdown("---")
+st.subheader("📸 Dokumentasi Kegiatan")
+
+# CONTAINER
+with st.container():
+
+    col1, col2 = st.columns([1,2])
+
+    # ===== UPLOAD FOTO =====
+    with col1:
+        uploaded_file = st.file_uploader(
+            "Upload Foto Dokumentasi",
+            type=["jpg", "jpeg", "png"]
+        )
+
+        tanggal = st.date_input("Tanggal Dokumentasi")
+
+    # ===== CAPTION + PREVIEW =====
+    with col2:
+        caption = st.text_area(
+            "Deskripsi / Caption",
+            placeholder="Contoh: Kegiatan panen padi di Desa Sukamaju dengan hasil meningkat 20% dibanding bulan lalu..."
+        )
+
+        # PREVIEW GAMBAR
+        if uploaded_file is not None:
+            st.image(uploaded_file, caption=caption if caption else "Preview Gambar", use_container_width=True)
+        else:
+            st.info("Belum ada gambar diupload")
+
+    # ===== INFO TAMBAHAN =====
+    if uploaded_file is not None:
+        st.success(f"📅 Tanggal: {tanggal}")
