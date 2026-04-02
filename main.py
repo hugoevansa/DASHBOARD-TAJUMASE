@@ -229,7 +229,7 @@ data_dokumentasi = pd.DataFrame({
         "Dokumentasi/Contoh 7.png"
     ],
     "Program": ["Lembata", "Lembata", "Ruteng", "Sulteng", "Giripurno", "Sumut"],
-    "tanggal": ["2024-01-12", "2024-02-15", "2024-03-20", "2025-01-12", "2024-04-15", "2025-03-20"],
+    "tanggal": ["2025-01-12", "2025-02-15", "2025-03-20", "2025-01-12", "2025-04-15", "2025-03-20"],
     "caption": [
         "Panen Wilayah A",
         "Distribusi Hasil",
