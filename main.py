@@ -269,13 +269,16 @@ st.markdown("""
 if doc_filtered.empty:
     st.info("Tidak ada dokumentasi untuk Program ini")
 else:
-    rows = [doc_filtered.iloc[i:i+3] for i in range(0, len(doc_filtered), 3)]
+    rows = rows = [doc_filtered.iloc[i:i+3] for i in range(0, len(doc_filtered), 3)]
 
-    for row_docs in rows:
-        cols = st.columns(len(row_docs))  # ⬅️ ini kunci supaya mulai dari kiri
+for row_docs in rows:
+    cols = st.columns(3)  # FIX 3 kolom
 
-        for col, (_, r) in zip(cols, row_docs.iterrows()):
-            with col:
+    for i in range(3):
+        with cols[i]:
+            if i < len(row_docs):
+                r = row_docs.iloc[i]
+
                 st.markdown('<div class="wrapper">', unsafe_allow_html=True)
                 st.image(r["file"], use_container_width=True)
                 st.markdown(
@@ -284,3 +287,5 @@ else:
                 )
                 st.markdown('</div>', unsafe_allow_html=True)
                 st.caption(r["caption"])
+            else:
+                st.empty()  # biar kolom kosong tapi ukuran tetap
