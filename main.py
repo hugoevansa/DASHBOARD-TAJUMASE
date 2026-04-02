@@ -30,7 +30,7 @@ h2, h3 {color:#6b8f71;}
 # ======================
 # UPLOAD FILE
 # ======================
-uploaded_file = st.file_uploader("data_panel.xlsx", type=["xlsx"])
+uploaded_file = st.file_uploader("Upload File Excel (.xlsx)", type=["xlsx"])
 
 if uploaded_file:
     df = pd.read_excel(uploaded_file)
