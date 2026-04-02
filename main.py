@@ -204,6 +204,11 @@ with c3:
 
     st.plotly_chart(fig_compare, use_container_width=True)
 
+#gambar
+st.subheader("Contoh Gambar")
+
+st.image("1.png", use_container_width=True)
+
 # ======================
 # WILAYAH
 # ======================
@@ -217,6 +222,3 @@ wilayah_df = pd.DataFrame({
 
 st.dataframe(wilayah_df, height=220, use_container_width=True)
 
-st.subheader("Contoh Gambar")
-
-st.image("1.png", use_container_width=True)
