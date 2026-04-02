@@ -100,7 +100,7 @@ if df_filtered.empty:
 # KPI
 # ======================
 total_panen = df_filtered["Produksi"].sum()
-anggaran = total_panen * 15000
+anggaran = df_filtered["Anggaran"].sum()
 luas_lahan = df_filtered["Luas_Lahan"].sum()
 produktivitas = total_panen / luas_lahan if luas_lahan != 0 else 0
 
