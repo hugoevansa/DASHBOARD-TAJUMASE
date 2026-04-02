@@ -28,9 +28,14 @@ h2, h3 {color:#6b8f71;}
 """, unsafe_allow_html=True)
 
 # ======================
-# UPLOAD FILE
+# LOAD DATA FROM GITHUB
 # ======================
-uploaded_file = st.file_uploader("Upload File Excel (.xlsx)", type=["xlsx"])
+@st.cache_data
+def load_data():
+    url = "https://raw.githubusercontent.com/USERNAME/REPO/main/data_panen.xlsx"
+    return pd.read_excel(url)
+
+df = load_data()
 
 if uploaded_file:
     df = pd.read_excel(uploaded_file)
