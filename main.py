@@ -6,19 +6,53 @@ import plotly.express as px
 st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 
 # ======================
-# STYLE (BIAR COMPACT)
+# 🎨 SAGE THEME STYLE
 # ======================
 st.markdown("""
 <style>
+
+/* BACKGROUND */
+.stApp {
+    background: linear-gradient(135deg, #e6efe9, #f4f7f5);
+}
+
+/* CONTAINER */
 .block-container {
     padding-top: 1rem;
     padding-bottom: 0rem;
 }
+
+/* KPI CARD */
 div[data-testid="stMetric"] {
-    background-color: #f9fafb;
-    padding: 10px;
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 14px;
+    border-left: 6px solid #8da98d;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+/* TITLE */
+h1 {
+    color: #5f7a61;
+}
+
+/* SUBTITLE */
+h2, h3 {
+    color: #6b8f71;
+}
+
+/* DATAFRAME */
+[data-testid="stDataFrame"] {
+    background-color: white;
+    border-radius: 12px;
+}
+
+/* SELECTBOX */
+div[data-baseweb="select"] {
+    background-color: white;
     border-radius: 10px;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -81,7 +115,7 @@ k3.metric("Luas Lahan", f"{luas_lahan:.1f} Ha")
 k4.metric("Produktivitas", f"{produktivitas:.1f} Kg/Ha")
 
 # ======================
-# CHART ROW (SEJAJAR FIX)
+# CHART ROW
 # ======================
 c1, c2, c3 = st.columns(3)
 
@@ -94,8 +128,19 @@ with c1:
         "Produksi": produksi
     })
 
-    fig_bar = px.bar(df, x="Bulan", y="Produksi")
-    fig_bar.update_layout(height=260, margin=dict(t=30, b=0))
+    fig_bar = px.bar(
+        df,
+        x="Bulan",
+        y="Produksi",
+        color_discrete_sequence=["#8da98d"]
+    )
+
+    fig_bar.update_layout(
+        height=260,
+        margin=dict(t=30, b=0),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
 
     st.plotly_chart(fig_bar, use_container_width=True)
 
@@ -112,8 +157,19 @@ with c2:
         ]
     })
 
-    fig_pie = px.pie(pie_df, names="Produk", values="Nilai", hole=0.4)
-    fig_pie.update_layout(height=260, margin=dict(t=30, b=0))
+    fig_pie = px.pie(
+        pie_df,
+        names="Produk",
+        values="Nilai",
+        hole=0.5,
+        color_discrete_sequence=["#8da98d", "#a3b8a3", "#c7d9c7"]
+    )
+
+    fig_pie.update_layout(
+        height=260,
+        margin=dict(t=30, b=0),
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
 
     st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -130,13 +186,26 @@ with c3:
         ]
     })
 
-    fig_compare = px.bar(compare_df, x="Produk", y="Total", color="Produk")
-    fig_compare.update_layout(height=260, margin=dict(t=30, b=0))
+    fig_compare = px.bar(
+        compare_df,
+        x="Produk",
+        y="Total",
+        color="Produk",
+        color_discrete_sequence=["#8da98d", "#a3b8a3", "#c7d9c7"]
+    )
+
+    fig_compare.update_layout(
+        height=260,
+        margin=dict(t=30, b=0),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        showlegend=False
+    )
 
     st.plotly_chart(fig_compare, use_container_width=True)
 
 # ======================
-# WILAYAH (FULL WIDTH)
+# WILAYAH
 # ======================
 st.subheader("Distribusi Wilayah Desa")
 
