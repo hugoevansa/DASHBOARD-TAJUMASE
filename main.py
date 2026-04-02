@@ -215,7 +215,7 @@ wilayah_df = df_filtered.groupby("Wilayah", as_index=False).agg({
     "Luas_Lahan":"sum"
 })
 
-st.dataframe(wilayah_df, height=220, use_container_width=True)
+st.dataframe(wilayah_df, height=220, use_container_width=True, hide_index=True)
 
 # ======================
 # DOKUMENTASI (SWIPE VERSION)
