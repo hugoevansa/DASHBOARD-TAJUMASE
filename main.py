@@ -212,7 +212,8 @@ st.subheader("Distribusi Wilayah Desa")
 wilayah_df = pd.DataFrame({
     "Wilayah": ["Desa A","Desa B","Desa C","Desa D"],
     "Hasil (Kg)": [total_panen*0.3, total_panen*0.25, total_panen*0.2, total_panen*0.25],
-    "Petani": [120,95,80,60]
+    "Petani": [120,95,80,60],
+    "Luas Lahan per Desa": [200,300,400,500]
 })
 
 st.dataframe(wilayah_df, height=220, use_container_width=True)
