@@ -14,7 +14,9 @@ def get_base64_image(image_path):
         return ""
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
-pattern_bg = image_to_base64_local("Dokumentasi/Pattern PI.png")
+        
+pattern_base64 = get_base64_image("Dokumentasi/Pattern PI.png")
+
 # CONFIG
 st.set_page_config(page_title="TAJUMASE", layout="wide")
 
