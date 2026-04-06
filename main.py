@@ -251,7 +251,7 @@ with c1:
 
 # ===== PIE (tidak ikut filter komoditas) =====
 with c2:
-    st.subheader("Komposisi Komoditas")
+    st.subheader("Komposisi Komoditas (%)")
 
     pie_df = df_compare.groupby("Komoditas", as_index=False)["Produksi"].sum()
 
@@ -287,7 +287,7 @@ with c2:
 
 # ===== PERBANDINGAN (tidak ikut filter komoditas) =====
 with c3:
-    st.subheader("Perbandingan Komoditas")
+    st.subheader("Perbandingan Komoditas (Kg)")
 
     compare_df = df_compare.groupby("Komoditas", as_index=False)["Produksi"].sum()
 
