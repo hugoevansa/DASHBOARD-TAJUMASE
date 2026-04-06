@@ -22,20 +22,38 @@ def image_to_base64_local(image_path):
         ext = "jpeg"
     return f"data:image/{ext};base64,{encoded}"
 
-pattern_bg = image_to_base64_local("Dokumentasi/Pattern PI.png")
+pattern_bg = image_to_base64_local("Pattern_PI.png")
 
 st.markdown(f"""
 <style>
 
 /* BACKGROUND */
 .stApp {{
-    background:
-        linear-gradient(rgba(230, 239, 233, 0.92), rgba(244, 247, 245, 0.94)),
-        url("{pattern_bg}");
-    background-size: cover, 340px;
-    background-repeat: no-repeat, repeat;
-    background-position: center, top left;
-    background-attachment: fixed, fixed;
+    background-color: #f4f7f5;
+    background-image: url("{pattern_bg}");
+    background-size: 300px;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-blend-mode: luminosity;
+    opacity-adjustment: none;
+}}
+
+/* OVERLAY TIPIS AGAR PATTERN TIDAK MENUTUPI KONTEN */
+.stApp::before {{
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(230, 239, 233, 0.40);
+    pointer-events: none;
+    z-index: 0;
+}}
+
+/* PASTIKAN SEMUA KONTEN DI ATAS OVERLAY */
+.block-container {{
+    position: relative;
+    z-index: 1;
+    padding-top: 1rem;
+    padding-bottom: 0rem;
 }}
 
 /* CONTAINER */
@@ -329,44 +347,44 @@ st.dataframe(
 )
 
 # ======================
-# DOKUMENTASI (SWIPE VERSION)
+# PRODUK OLAHAN (SWIPE VERSION)
 # ======================
-st.markdown("## Dokumentasi")
+st.markdown("## PRODUK OLAHAN")
 
-# DATA DOKUMENTASI
-data_dokumentasi = pd.DataFrame([
+# DATA PRODUK OLAHAN (nama variabel bebas, tapi nanti masuk ke doc_filtered)
+data_produk_olahan = pd.DataFrame([
     {
         "caption": "Panen Wilayah A",
-        "file": "Dokumentasi/contoh 1.png",
+        "file": "ProdukOlahan/contoh 1.png",
         "Program": "Lembata",
         "tanggal": "2025-01-12"
     },
     {
-        "file": "Dokumentasi/contoh 2.png",
+        "file": "ProdukOlahan/contoh 2.png",
         "Program": "Lembata",
         "tanggal": "2025-02-15",
         "caption": "Distribusi Hasil"
     },
     {
-        "file": "Dokumentasi/contoh 4.png",
+        "file": "ProdukOlahan/contoh 4.png",
         "Program": "Ruteng",
         "tanggal": "2025-03-20",
         "caption": "Aktivitas Petani"
     },
     {
-        "file": "Dokumentasi/Contoh 5.png",
+        "file": "ProdukOlahan/Contoh 5.png",
         "Program": "Sulteng",
         "tanggal": "2025-01-12",
         "caption": "Petani Sulteng"
     },
     {
-        "file": "Dokumentasi/Contoh 6.png",
+        "file": "ProdukOlahan/Contoh 6.png",
         "Program": "Giripurno",
         "tanggal": "2025-04-15",
         "caption": "Giripurno Farm"
     },
     {
-        "file": "Dokumentasi/Contoh 7.png",
+        "file": "ProdukOlahan/Contoh 7.png",
         "Program": "Sumut",
         "tanggal": "2025-03-20",
         "caption": "Sumatera Sejahtera"
@@ -374,29 +392,28 @@ data_dokumentasi = pd.DataFrame([
 ])
 
 # ======================
-# PREP DATA (FIX FINAL)
+# PREP DATA
 # ======================
-data_dokumentasi["tanggal"] = pd.to_datetime(data_dokumentasi["tanggal"])
-data_dokumentasi["Tahun"] = data_dokumentasi["tanggal"].dt.year.astype(int)
+data_produk_olahan["tanggal"] = pd.to_datetime(data_produk_olahan["tanggal"])
+data_produk_olahan["Tahun"] = data_produk_olahan["tanggal"].dt.year.astype(int)
 
-# 🔥 NORMALISASI KEDUANYA (WAJIB!)
 df_doc = df_doc.copy()
 df_doc["Program"] = df_doc["Program"].astype(str).str.lower().str.strip()
-data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
+data_produk_olahan["Program"] = data_produk_olahan["Program"].astype(str).str.lower().str.strip()
 
 # ======================
-# FILTER SESUAI PROGRAM + TAHUN (TANPA PRODUK)
+# FILTER (tetap pakai doc_filtered 🔥)
 # ======================
 program_aktif = df_doc["Program"].unique()
 
 if tahun != "Semua Tahun":
-    doc_filtered = data_dokumentasi[
-        (data_dokumentasi["Program"].isin(program_aktif)) &
-        (data_dokumentasi["Tahun"] == int(tahun))
+    doc_filtered = data_produk_olahan[
+        (data_produk_olahan["Program"].isin(program_aktif)) &
+        (data_produk_olahan["Tahun"] == int(tahun))
     ].copy()
 else:
-    doc_filtered = data_dokumentasi[
-        (data_dokumentasi["Program"].isin(program_aktif))
+    doc_filtered = data_produk_olahan[
+        (data_produk_olahan["Program"].isin(program_aktif))
     ].copy()
 
 # ======================
@@ -417,7 +434,7 @@ def image_to_base64(image_path):
 # RENDER CAROUSEL
 # ======================
 if doc_filtered.empty:
-    st.info("Tidak ada dokumentasi untuk filter ini")
+    st.info("Tidak ada produk olahan untuk filter ini")
 else:
     cards_html = ""
 
@@ -440,7 +457,7 @@ else:
         </div>
         """
     if cards_html.strip() == "":
-        st.warning("File gambar dokumentasi tidak ditemukan. Pastikan path file benar.")
+        st.warning("Tidak ada Produk Olahan")
     else:
         carousel_html = f"""
         <style>
@@ -574,14 +591,14 @@ else:
         components.html(carousel_html, height=380)
 
 # ======================
-# DOKUMENTASI (SWIPE VERSION)
+# PUPUK (SWIPE VERSION)
 # ======================
-st.markdown("## Dokumentasi")
+st.markdown("## PUPUK")
 
-# DATA DOKUMENTASI
-data_dokumentasi = pd.DataFrame([
+# DATA PUPUK
+data_pupuk = pd.DataFrame([
     {
-        "caption": "Panen Wilayah A",
+        "caption": "Pupuk Phonska",
         "file": "Dokumentasi/contoh 1.png",
         "Program": "Lembata",
         "tanggal": "2025-01-12"
@@ -590,58 +607,57 @@ data_dokumentasi = pd.DataFrame([
         "file": "Dokumentasi/contoh 2.png",
         "Program": "Lembata",
         "tanggal": "2025-02-15",
-        "caption": "Distribusi Hasil"
+        "caption": "Pupuk Urea"
     },
     {
         "file": "Dokumentasi/contoh 4.png",
         "Program": "Ruteng",
         "tanggal": "2025-03-20",
-        "caption": "Aktivitas Petani"
+        "caption": "Pupuk Nitrea"
     },
     {
         "file": "Dokumentasi/Contoh 5.png",
         "Program": "Sulteng",
         "tanggal": "2025-01-12",
-        "caption": "Petani Sulteng"
+        "caption": "Distribusi Pupuk"
     },
     {
         "file": "Dokumentasi/Contoh 6.png",
         "Program": "Giripurno",
         "tanggal": "2025-04-15",
-        "caption": "Giripurno Farm"
+        "caption": "Gudang Pupuk"
     },
     {
         "file": "Dokumentasi/Contoh 7.png",
         "Program": "Sumut",
         "tanggal": "2025-03-20",
-        "caption": "Sumatera Sejahtera"
+        "caption": "Stok Pupuk"
     }
 ])
 
 # ======================
-# PREP DATA (FIX FINAL)
+# PREP DATA
 # ======================
-data_dokumentasi["tanggal"] = pd.to_datetime(data_dokumentasi["tanggal"])
-data_dokumentasi["Tahun"] = data_dokumentasi["tanggal"].dt.year.astype(int)
+data_pupuk["tanggal"] = pd.to_datetime(data_pupuk["tanggal"])
+data_pupuk["Tahun"] = data_pupuk["tanggal"].dt.year.astype(int)
 
-# 🔥 NORMALISASI KEDUANYA (WAJIB!)
 df_doc = df_doc.copy()
 df_doc["Program"] = df_doc["Program"].astype(str).str.lower().str.strip()
-data_dokumentasi["Program"] = data_dokumentasi["Program"].astype(str).str.lower().str.strip()
+data_pupuk["Program"] = data_pupuk["Program"].astype(str).str.lower().str.strip()
 
 # ======================
-# FILTER SESUAI PROGRAM + TAHUN (TANPA PRODUK)
+# FILTER (tetap doc_filtered 🔥)
 # ======================
 program_aktif = df_doc["Program"].unique()
 
 if tahun != "Semua Tahun":
-    doc_filtered = data_dokumentasi[
-        (data_dokumentasi["Program"].isin(program_aktif)) &
-        (data_dokumentasi["Tahun"] == int(tahun))
+    doc_filtered = data_pupuk[
+        (data_pupuk["Program"].isin(program_aktif)) &
+        (data_pupuk["Tahun"] == int(tahun))
     ].copy()
 else:
-    doc_filtered = data_dokumentasi[
-        (data_dokumentasi["Program"].isin(program_aktif))
+    doc_filtered = data_pupuk[
+        (data_pupuk["Program"].isin(program_aktif))
     ].copy()
 
 # ======================
@@ -662,7 +678,7 @@ def image_to_base64(image_path):
 # RENDER CAROUSEL
 # ======================
 if doc_filtered.empty:
-    st.info("Tidak ada dokumentasi untuk filter ini")
+    st.info("Tidak ada pupuk yang digunakan untuk filter ini")
 else:
     cards_html = ""
 
@@ -685,7 +701,7 @@ else:
         </div>
         """
     if cards_html.strip() == "":
-        st.warning("File gambar dokumentasi tidak ditemukan. Pastikan path file benar.")
+        st.warning("Tidak ada Pupuk yang digunakan")
     else:
         carousel_html = f"""
         <style>
