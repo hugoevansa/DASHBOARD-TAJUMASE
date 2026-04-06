@@ -121,39 +121,26 @@ div[data-testid="column"] > div:has(div[data-testid="stPlotlyChart"]) {{
 df = pd.read_excel("data_panen_dummy.xlsx")
 
 # ======================
+# LOAD LOGO
+# ======================
+logo_path = "logo.png"  # ← Ganti sesuai nama file logo kamu
+logo_b64 = image_to_base64_local(logo_path)
+
+# ======================
 # HEADER + FILTER
 # ======================
-logo_tajumase = image_to_base64_local("Dokumentasi/Pupuk4.png")
 col1, col2, col3, col4 = st.columns([2,1,1,1])
 
 with col1:
-    st.markdown(f"""
-    <div class="header-wrap">
-        <img src="{logo_tajumase}" class="header-logo"/>
-        <div class="header-title">TAJUMASE</div>
-    </div>
-    """, unsafe_allow_html=True)
-    .header-wrap {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.header-logo {
-    width: 46px;
-    height: 46px;
-    object-fit: contain;
-
-    /* bikin efek "melayang" seperti produk */
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-}
-
-.header-title {
-    font-size: 38px;
-    font-weight: 800;
-    color: #5f7a61;
-    letter-spacing: 1px;
-}
+    if logo_b64:
+        st.markdown(f"""
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="{logo_b64}" style="height: 60px; width: auto; object-fit: contain;"/>
+            <h1 style="margin: 0; color: #5f7a61;">TAJUMASE</h1>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.title("TAJUMASE")
 
 # ======================
 # FILTER PROGRAM (MAIN FILTER)
