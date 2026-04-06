@@ -1077,8 +1077,8 @@ else:
             
             .doc-date {{
                 position: absolute;
-                right: 12px;  
-                bottom: 1px;
+                right: 0px;  
+                bottom: 10px;
             
                 background: rgba(255,255,255,0.92);
                 color: #2f3e34;
