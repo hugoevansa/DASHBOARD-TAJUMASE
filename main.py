@@ -355,7 +355,7 @@ st.markdown("## PRODUK OLAHAN")
 data_produk_olahan = pd.DataFrame([
     {
         "caption": "Panen Wilayah A",
-        "file": "Dokumentasi/Pupuk2.png",
+        "file": "ProdukOlahan/contoh 2.png",
         "Program": "Lembata",
         "tanggal": "2025-01-12"
     },
