@@ -102,7 +102,7 @@ df = pd.read_excel("data_panen_dummy.xlsx")
 col1, col2, col3, col4 = st.columns([2,1,1,1])
 
 with col1:
-    st.title("🌾 Dashboard Panen Rempah")
+    st.title("TAJUMASE")
 
 # ======================
 # FILTER PROGRAM (MAIN FILTER)
