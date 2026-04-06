@@ -599,36 +599,36 @@ st.markdown("## PUPUK")
 data_pupuk = pd.DataFrame([
     {
         "caption": "Pupuk Phonska",
-        "file": "Dokumentasi/contoh 1.png",
+        "file": "Pupuk/contoh 1.png",
         "Program": "Lembata",
         "tanggal": "2025-01-12"
     },
     {
-        "file": "Dokumentasi/contoh 2.png",
+        "file": "Pupuk/contoh 2.png",
         "Program": "Lembata",
         "tanggal": "2025-02-15",
         "caption": "Pupuk Urea"
     },
     {
-        "file": "Dokumentasi/contoh 4.png",
+        "file": "Pupuk/contoh 4.png",
         "Program": "Ruteng",
         "tanggal": "2025-03-20",
         "caption": "Pupuk Nitrea"
     },
     {
-        "file": "Dokumentasi/Contoh 5.png",
+        "file": "Pupuk/Contoh 5.png",
         "Program": "Sulteng",
         "tanggal": "2025-01-12",
         "caption": "Distribusi Pupuk"
     },
     {
-        "file": "Dokumentasi/Contoh 6.png",
+        "file": "Pupuk/Contoh 6.png",
         "Program": "Giripurno",
         "tanggal": "2025-04-15",
         "caption": "Gudang Pupuk"
     },
     {
-        "file": "Dokumentasi/Contoh 7.png",
+        "file": "Pupuk/Contoh 7.png",
         "Program": "Sumut",
         "tanggal": "2025-03-20",
         "caption": "Stok Pupuk"
