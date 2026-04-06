@@ -452,7 +452,7 @@ else:
                 margin: 0 !important;
             }}
             
-             .olahan-caption {
+             .olahan-caption {{
                 font-size: 20px;
                 font-weight: 800;
                 color: #2f3e34;
@@ -460,8 +460,8 @@ else:
             
                 text-align: center;
                 letter-spacing: 0.5px;
-            }
-
+            }}
+            
             .olahan-image-wrap {{
                 position: relative;
                 background: transparent !important;
