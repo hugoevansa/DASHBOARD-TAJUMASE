@@ -13,8 +13,8 @@ st.set_page_config(page_title="TAJUMASE", layout="wide")
 # ======================
 # 🎨 SAGE THEME STYLE
 # ======================
-def image_to_base64_local(Dokumentasi/Pattern PI.png):
-    path = Path(Dokumentasi/Pattern PI.png)
+def image_to_base64_local(image_path):
+    path = Path(image_path)
     if not path.exists():
         return ""
     with open(path, "rb") as f:
@@ -24,7 +24,8 @@ def image_to_base64_local(Dokumentasi/Pattern PI.png):
         ext = "jpeg"
     return f"data:image/{ext};base64,{encoded}"
 
-pattern_bg = image_to_base64_local("Dokumentasi/Pattern Pi.png")
+pattern_bg = image_to_base64_local("Dokumentasi/Pattern PI.png")
+
 st.markdown(f"""
 <style>
 
