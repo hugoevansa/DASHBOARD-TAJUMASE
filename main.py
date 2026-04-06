@@ -104,7 +104,7 @@ st.markdown(f"""
 .stApp {{
     background:
         linear-gradient(rgba(230, 239, 233, 0.92), rgba(244, 247, 245, 0.94)),
-        url("{pattern_bg}");
+        url("{pattern_base64}");
     background-size: cover, 340px;
     background-repeat: no-repeat, repeat;
     background-position: center, top left;
