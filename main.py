@@ -676,26 +676,21 @@ with c5:
 # ======================
 st.markdown("## PUPUK")
 
-# DATA PUPUK (SELALU TAMPIL, TIDAK IKUT FILTER)
+# DATA PUPUK
 data_pupuk = pd.DataFrame([
     {
         "caption": "Pupuk Phonska",
-        "file": "Dokumentasi/Pupuk1.png",
-        "tanggal": "2025-01-12"
+        "file": "Dokumentasi/Pupuk1.png"
     },
     {
         "caption": "Pupuk Urea",
-        "file": "Dokumentasi/Pupuk2.png",
-        "tanggal": "2025-02-15"
+        "file": "Dokumentasi/Pupuk2.png"
     },
     {
         "caption": "Pupuk Nitrea",
-        "file": "Dokumentasi/Pupuk3.png",
-        "tanggal": "2025-03-20"
+        "file": "Dokumentasi/Pupuk3.png"
     }
 ])
-
-data_pupuk["tanggal"] = pd.to_datetime(data_pupuk["tanggal"])
 
 # TIDAK IKUT FILTER APAPUN
 doc_filtered = data_pupuk.copy()
@@ -728,15 +723,12 @@ else:
         if img_src is None:
             continue
 
-        tanggal_label = row["tanggal"].strftime("%d %b %Y")
-
         cards_html += f"""
         <div class="pupuk-card">
             <div class="pupuk-caption">{row["caption"]}</div>
 
             <div class="pupuk-image-wrap">
                 <img src="{img_src}" class="pupuk-image"/>
-                <div class="pupuk-date">{tanggal_label}</div>
             </div>
         </div>
         """
@@ -805,18 +797,6 @@ else:
                 display: block;
                 filter: drop-shadow(0 14px 20px rgba(0,0,0,0.14));
                 background: transparent !important;
-            }}
-
-            .pupuk-date {{
-                position: absolute;
-                right: 18px;
-                bottom: 12px;
-                background: rgba(0,0,0,0.65);
-                color: #fff;
-                padding: 6px 10px;
-                border-radius: 10px;
-                font-size: 12px;
-                font-weight: 600;
             }}
 
             .pupuk-nav-btn {{
