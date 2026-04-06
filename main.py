@@ -347,15 +347,10 @@ st.dataframe(
 )
 
 # ======================
-# PRODUK OLAHAN (SWIPE VERSION - FILTER PROGRAM + TAHUN HIDDEN)
+# PRODUK OLAHAN (SWIPE VERSION - FILTER PROGRAM + TAHUN)
 # ======================
 st.markdown("## PRODUK OLAHAN")
 
-# tahun hidden khusus untuk produk olahan
-tahun_produk_olahan = 2025
-
-# DATA PRODUK OLAHAN
-# ubah Program sesuai kebutuhan data kamu
 data_produk_olahan = pd.DataFrame([
     {
         "caption": "Sabun Olahan",
@@ -371,9 +366,6 @@ data_produk_olahan = pd.DataFrame([
     }
 ])
 
-# ======================
-# PREP DATA
-# ======================
 data_produk_olahan["tanggal"] = pd.to_datetime(data_produk_olahan["tanggal"])
 data_produk_olahan["Tahun"] = data_produk_olahan["tanggal"].dt.year.astype(int)
 
@@ -381,21 +373,18 @@ df_doc_produk = df_doc.copy()
 df_doc_produk["Program"] = df_doc_produk["Program"].astype(str).str.lower().str.strip()
 data_produk_olahan["Program"] = data_produk_olahan["Program"].astype(str).str.lower().str.strip()
 
-# ======================
-# FILTER PRODUK OLAHAN
-# hanya ikut Program dashboard
-# Tahun hidden dari coding
-# ======================
 program_aktif = df_doc_produk["Program"].unique()
 
-doc_filtered = data_produk_olahan[
-    (data_produk_olahan["Program"].isin(program_aktif)) &
-    (data_produk_olahan["Tahun"] == tahun_produk_olahan)
-].copy()
+if tahun != "Semua Tahun":
+    doc_filtered = data_produk_olahan[
+        (data_produk_olahan["Program"].isin(program_aktif)) &
+        (data_produk_olahan["Tahun"] == int(tahun))
+    ].copy()
+else:
+    doc_filtered = data_produk_olahan[
+        (data_produk_olahan["Program"].isin(program_aktif))
+    ].copy()
 
-# ======================
-# HELPER: IMAGE TO BASE64
-# ======================
 def image_to_base64(image_path):
     path = Path(image_path)
     if not path.exists():
@@ -407,11 +396,8 @@ def image_to_base64(image_path):
         ext = "jpeg"
     return f"data:image/{ext};base64,{encoded}"
 
-# ======================
-# RENDER CAROUSEL
-# ======================
 if doc_filtered.empty:
-    st.info("Tidak ada produk olahan untuk program ini")
+    st.info("Tidak ada produk olahan untuk filter ini")
 else:
     cards_html = ""
 
@@ -420,15 +406,12 @@ else:
         if img_src is None:
             continue
 
-        tanggal_label = row["tanggal"].strftime("%d %b %Y")
-
         cards_html += f"""
         <div class="olahan-card">
             <div class="olahan-caption">{row["caption"]}</div>
 
             <div class="olahan-image-wrap">
                 <img src="{img_src}" class="olahan-image"/>
-                <div class="olahan-date">{tanggal_label}</div>
             </div>
         </div>
         """
@@ -497,18 +480,6 @@ else:
                 display: block;
                 filter: drop-shadow(0 14px 20px rgba(0,0,0,0.14));
                 background: transparent !important;
-            }}
-
-            .olahan-date {{
-                position: absolute;
-                right: 18px;
-                bottom: 12px;
-                background: rgba(0,0,0,0.65);
-                color: #fff;
-                padding: 6px 10px;
-                border-radius: 10px;
-                font-size: 12px;
-                font-weight: 600;
             }}
 
             .olahan-nav-btn {{
