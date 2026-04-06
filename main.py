@@ -983,17 +983,13 @@ else:
 
         tanggal_label = row["tanggal"].strftime("%d %b %Y")
 
-               cards_html += f"""
+        cards_html += f"""
         <div class="doc-card">
+            <div class="doc-caption">{row["caption"]}</div>
         
             <div class="doc-image-wrap">
                 <img src="{img_src}" class="doc-image"/>
-        
-                <div class="doc-overlay">
-                    <div class="doc-title">{row["caption"]}</div>
-                    <div class="doc-date">{tanggal_label}</div>
-                </div>
-        
+                <div class="doc-date">{tanggal_label}</div>
             </div>
         </div>
         """
@@ -1099,6 +1095,7 @@ else:
             .nav-right {{
                 right: 0;
             }}
+
         </style>
 
         <div class="netflix-wrap">
