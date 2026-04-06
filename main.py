@@ -210,7 +210,7 @@ c1, c2, c3 = st.columns(3)
 
 # ===== BAR BULANAN (ikut komoditas) =====
 with c1:
-    st.subheader("Produksi Bulanan")
+    st.subheader("Produksi Bulanan (Kg)")
 
     bulanan = df_filtered.groupby("Bulan", as_index=False)["Produksi"].sum()
 
