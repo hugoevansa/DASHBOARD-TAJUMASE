@@ -1030,28 +1030,27 @@ else:
                 transform: scale(1.03);
             }}
 
-            .doc-image-wrap {
+            .doc-image-wrap {{
                 position: relative;
                 border-radius: 18px;
                 overflow: hidden;
                 box-shadow: 0 12px 28px rgba(0,0,0,0.12);
                 background: #fff;
-            }
+            }}
             
-            .doc-image {
+            .doc-image {{
                 width: 100%;
                 height: 260px;
                 object-fit: cover;
                 display: block;
                 transition: transform 0.4s ease;
-            }
+            }}
             
-            .doc-card:hover .doc-image {
+            .doc-card:hover .doc-image {{
                 transform: scale(1.05);
-            }
+            }}
             
-            /* bayangan hitam di bawah gambar */
-            .doc-overlay {
+            .doc-overlay {{
                 position: absolute;
                 left: 0;
                 bottom: 0;
@@ -1068,27 +1067,26 @@ else:
                     rgba(0,0,0,0.55),
                     rgba(0,0,0,0.00)
                 );
-            }
+            }}
             
-            .doc-title {
+            .doc-title {{
                 color: white;
                 font-size: 16px;
                 font-weight: 700;
-            }
+            }}
             
-            .doc-date {
+            .doc-date {{
                 background: rgba(255,255,255,0.92);
                 color: #2f3e34;
                 padding: 5px 12px;
                 border-radius: 999px;
                 font-size: 12px;
                 font-weight: 600;
-            }
+            }}
             
-            /* caption lama di atas gambar dimatikan */
-            .doc-caption {
+            .doc-caption {{
                 display: none;
-            }
+            }}
 
             .nav-btn {{
                 position: absolute;
