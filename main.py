@@ -123,10 +123,37 @@ df = pd.read_excel("data_panen_dummy.xlsx")
 # ======================
 # HEADER + FILTER
 # ======================
+logo_tajumase = image_to_base64_local("Dokumentasi/Pupuk4.png")
 col1, col2, col3, col4 = st.columns([2,1,1,1])
 
 with col1:
-    st.title("TAJUMASE")
+    st.markdown(f"""
+    <div class="header-wrap">
+        <img src="{logo_tajumase}" class="header-logo"/>
+        <div class="header-title">TAJUMASE</div>
+    </div>
+    """, unsafe_allow_html=True)
+    .header-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+
+    /* bikin efek "melayang" seperti produk */
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+
+.header-title {
+    font-size: 38px;
+    font-weight: 800;
+    color: #5f7a61;
+    letter-spacing: 1px;
+}
 
 # ======================
 # FILTER PROGRAM (MAIN FILTER)
