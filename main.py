@@ -134,7 +134,7 @@ col1, col2, col3, col4 = st.columns([2,1,1,1])
 with col1:
     if logo_b64:
         st.markdown(f"""
-        <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 14px; padding-top: 18px;">
             <img src="{logo_b64}" style="height: 60px; width: auto; object-fit: contain;"/>
             <h1 style="margin: 0; color: #5f7a61;">TAJUMASE</h1>
         </div>
