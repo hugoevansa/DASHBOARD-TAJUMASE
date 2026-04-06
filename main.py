@@ -95,17 +95,17 @@ div[data-baseweb="select"] {{
 
 /* CHART CARD EFFECT */
 div[data-testid="stPlotlyChart"] {{
-    background: transparent !important;
-    border-radius: 16px;
-    padding: 12px;
-    border: 1px solid rgba(0,0,0,0);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    background-color: rgba(255,255,255,0.85) !important;
+    border-radius: 16px !important;
+    padding: 12px !important;
+    border: 1px solid rgba(141, 169, 141, 0.25) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
     transition: all 0.25s ease;
 }}
 
 div[data-testid="stPlotlyChart"]:hover {{
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12) !important;
 }}
 
 div[data-testid="column"] > div:has(div[data-testid="stPlotlyChart"]) {{
