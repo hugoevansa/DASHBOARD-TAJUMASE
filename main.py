@@ -257,8 +257,8 @@ with c2:
 
     fig_pie.update_layout(
         height=300,
-        margin=dict(t=20, b=20, l=20, r=120),   # ← r=120 beri ruang legend
-        paper_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=20, b=20, l=20, r=120),
+        paper_bgcolor='rgba(230, 239, 233, 0.60)',
         legend=dict(
             font=dict(size=9),
             x=1.02,
