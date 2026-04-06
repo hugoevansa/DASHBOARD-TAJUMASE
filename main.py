@@ -13,8 +13,8 @@ st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 # ======================
 # 🎨 SAGE THEME STYLE
 # ======================
-def image_to_base64_local(image_path):
-    path = Path(image_path)
+def image_to_base64_local(Dokumentasi/Pattern PI.png):
+    path = Path(Pattern PI.png)
     if not path.exists():
         return ""
     with open(path, "rb") as f:
