@@ -347,47 +347,27 @@ st.dataframe(
 )
 
 # ======================
-# PRODUK OLAHAN (SWIPE VERSION)
+# PRODUK OLAHAN (SWIPE VERSION - FILTER PROGRAM + TAHUN HIDDEN)
 # ======================
 st.markdown("## PRODUK OLAHAN")
 
-# DATA PRODUK OLAHAN (nama variabel bebas, tapi nanti masuk ke doc_filtered)
+# tahun hidden khusus untuk produk olahan
+tahun_produk_olahan = 2025
+
+# DATA PRODUK OLAHAN
+# ubah Program sesuai kebutuhan data kamu
 data_produk_olahan = pd.DataFrame([
     {
-        "caption": "Panen Wilayah A",
-        "file": "ProdukOlahan/contoh 2.png",
+        "caption": "Sabun Olahan",
+        "file": "Dokumentasi/Sabun4.png",
         "Program": "Lembata",
         "tanggal": "2025-01-12"
     },
     {
-        "file": "ProdukOlahan/contoh 2.png",
-        "Program": "Lembata",
-        "tanggal": "2025-02-15",
-        "caption": "Distribusi Hasil"
-    },
-    {
-        "file": "ProdukOlahan/contoh 4.png",
+        "caption": "Bubuk Olahan",
+        "file": "Dokumentasi/Bubuk4.png",
         "Program": "Ruteng",
-        "tanggal": "2025-03-20",
-        "caption": "Aktivitas Petani"
-    },
-    {
-        "file": "ProdukOlahan/Contoh 5.png",
-        "Program": "Sulteng",
-        "tanggal": "2025-01-12",
-        "caption": "Petani Sulteng"
-    },
-    {
-        "file": "ProdukOlahan/Contoh 6.png",
-        "Program": "Giripurno",
-        "tanggal": "2025-04-15",
-        "caption": "Giripurno Farm"
-    },
-    {
-        "file": "ProdukOlahan/Contoh 7.png",
-        "Program": "Sumut",
-        "tanggal": "2025-03-20",
-        "caption": "Sumatera Sejahtera"
+        "tanggal": "2025-02-15"
     }
 ])
 
@@ -397,24 +377,21 @@ data_produk_olahan = pd.DataFrame([
 data_produk_olahan["tanggal"] = pd.to_datetime(data_produk_olahan["tanggal"])
 data_produk_olahan["Tahun"] = data_produk_olahan["tanggal"].dt.year.astype(int)
 
-df_doc = df_doc.copy()
-df_doc["Program"] = df_doc["Program"].astype(str).str.lower().str.strip()
+df_doc_produk = df_doc.copy()
+df_doc_produk["Program"] = df_doc_produk["Program"].astype(str).str.lower().str.strip()
 data_produk_olahan["Program"] = data_produk_olahan["Program"].astype(str).str.lower().str.strip()
 
 # ======================
-# FILTER (tetap pakai doc_filtered 🔥)
+# FILTER PRODUK OLAHAN
+# hanya ikut Program dashboard
+# Tahun hidden dari coding
 # ======================
-program_aktif = df_doc["Program"].unique()
+program_aktif = df_doc_produk["Program"].unique()
 
-if tahun != "Semua Tahun":
-    doc_filtered = data_produk_olahan[
-        (data_produk_olahan["Program"].isin(program_aktif)) &
-        (data_produk_olahan["Tahun"] == int(tahun))
-    ].copy()
-else:
-    doc_filtered = data_produk_olahan[
-        (data_produk_olahan["Program"].isin(program_aktif))
-    ].copy()
+doc_filtered = data_produk_olahan[
+    (data_produk_olahan["Program"].isin(program_aktif)) &
+    (data_produk_olahan["Tahun"] == tahun_produk_olahan)
+].copy()
 
 # ======================
 # HELPER: IMAGE TO BASE64
@@ -434,81 +411,97 @@ def image_to_base64(image_path):
 # RENDER CAROUSEL
 # ======================
 if doc_filtered.empty:
-    st.info("Tidak ada produk olahan untuk filter ini")
+    st.info("Tidak ada produk olahan untuk program ini")
 else:
     cards_html = ""
 
     for _, row in doc_filtered.iterrows():
         img_src = image_to_base64(row["file"])
-
         if img_src is None:
             continue
 
         tanggal_label = row["tanggal"].strftime("%d %b %Y")
 
         cards_html += f"""
-        <div class="doc-card">
-            <div class="doc-caption">{row["caption"]}</div>
-        
-            <div class="doc-image-wrap">
-                <img src="{img_src}" class="doc-image"/>
-                <div class="doc-date">{tanggal_label}</div>
+        <div class="olahan-card">
+            <div class="olahan-caption">{row["caption"]}</div>
+
+            <div class="olahan-image-wrap">
+                <img src="{img_src}" class="olahan-image"/>
+                <div class="olahan-date">{tanggal_label}</div>
             </div>
         </div>
         """
+
     if cards_html.strip() == "":
-        st.warning("Tidak ada Produk Olahan")
+        st.warning("File gambar produk olahan tidak ditemukan. Pastikan path file benar.")
     else:
-        carousel_html = f"""
+        olahan_html = f"""
         <style>
-            .netflix-wrap {{
+            .olahan-wrap {{
                 position: relative;
                 width: 100%;
-                padding: 8px 0 16px 0;
+                padding: 8px 0 20px 0;
             }}
 
-            .netflix-track {{
+            .olahan-track {{
                 display: flex;
-                gap: 20px;
+                gap: 10px;
                 overflow-x: auto;
                 scroll-behavior: smooth;
                 scrollbar-width: none;
-                padding: 6px 8px 14px 8px;
+                padding: 0 40px;
+                align-items: flex-end;
             }}
 
-            .netflix-track::-webkit-scrollbar {{
+            .olahan-track::-webkit-scrollbar {{
                 display: none;
             }}
 
-            .doc-card {{
-                flex: 0 0 32%;
-                min-width: 320px;
-                max-width: 420px;
-                transition: transform 0.35s ease, box-shadow 0.35s ease;
+            .olahan-card {{
+                flex: 0 0 33%;
+                min-width: 360px;
+                max-width: 520px;
+                background: transparent !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }}
 
-            .doc-card:hover {{
-                transform: scale(1.03);
+            .olahan-caption {{
+                font-size: 18px;
+                font-weight: 800;
+                color: #2f3e34;
+                margin-bottom: 10px;
+                padding-left: 12px;
             }}
 
-            .doc-image-wrap {{
+            .olahan-image-wrap {{
                 position: relative;
-                border-radius: 18px;
-                overflow: hidden;
-                box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-                background: #fff;
+                background: transparent !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+                overflow: visible !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 360px;
             }}
 
-            .doc-image {{
+            .olahan-image {{
                 width: 100%;
-                height: 240px;
-                object-fit: cover;
+                height: 360px;
+                object-fit: contain;
                 display: block;
+                filter: drop-shadow(0 14px 20px rgba(0,0,0,0.14));
+                background: transparent !important;
             }}
 
-            .doc-date {{
+            .olahan-date {{
                 position: absolute;
-                right: 12px;
+                right: 18px;
                 bottom: 12px;
                 background: rgba(0,0,0,0.65);
                 color: #fff;
@@ -518,26 +511,18 @@ else:
                 font-weight: 600;
             }}
 
-            .doc-caption {{
-                margin-top: 12px;
-                font-size: 18px;
-                font-weight: 700;
-                color: #2f3e34;
-                padding-left: 2px;
-            }}
-
-            .nav-btn {{
+            .olahan-nav-btn {{
                 position: absolute;
-                top: 40%;
+                top: 50%;
                 transform: translateY(-50%);
                 z-index: 10;
-                width: 46px;
-                height: 46px;
+                width: 54px;
+                height: 54px;
                 border: none;
                 border-radius: 999px;
-                background: rgba(40, 40, 40, 0.70);
+                background: rgba(60, 60, 60, 0.72);
                 color: white;
-                font-size: 26px;
+                font-size: 30px;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
@@ -546,38 +531,37 @@ else:
                 backdrop-filter: blur(4px);
             }}
 
-            .nav-btn:hover {{
-                background: rgba(20, 20, 20, 0.90);
+            .olahan-nav-btn:hover {{
+                background: rgba(30, 30, 30, 0.92);
                 transform: translateY(-50%) scale(1.08);
             }}
 
-            .nav-left {{
+            .olahan-nav-left {{
                 left: 0;
             }}
 
-            .nav-right {{
+            .olahan-nav-right {{
                 right: 0;
             }}
-
         </style>
 
-        <div class="netflix-wrap">
-            <button class="nav-btn nav-left" onclick="scrollDocs(-1)">&#10094;</button>
-            <button class="nav-btn nav-right" onclick="scrollDocs(1)">&#10095;</button>
+        <div class="olahan-wrap">
+            <button class="olahan-nav-btn olahan-nav-left" onclick="scrollOlahan(-1)">&#10094;</button>
+            <button class="olahan-nav-btn olahan-nav-right" onclick="scrollOlahan(1)">&#10095;</button>
 
-            <div class="netflix-track" id="docs-track">
+            <div class="olahan-track" id="olahan-track">
                 {cards_html}
             </div>
         </div>
 
         <script>
-            function scrollDocs(direction) {{
-                const track = document.getElementById("docs-track");
-                const card = track.querySelector(".doc-card");
+            function scrollOlahan(direction) {{
+                const track = document.getElementById("olahan-track");
+                const card = track.querySelector(".olahan-card");
                 if (!card) return;
 
                 const style = window.getComputedStyle(track);
-                const gap = parseInt(style.columnGap || style.gap || 20);
+                const gap = parseInt(style.columnGap || style.gap || 10);
                 const scrollAmount = card.offsetWidth + gap;
 
                 track.scrollBy({{
@@ -588,7 +572,7 @@ else:
         </script>
         """
 
-        components.html(carousel_html, height=380)
+        components.html(olahan_html, height=460)
 
 
 # ======================
