@@ -1032,63 +1032,73 @@ else:
                 transform: scale(1.03);
             }}
 
-                        .doc-image-wrap {
+            .doc-image-wrap {{
                 position: relative;
                 border-radius: 18px;
                 overflow: hidden;
-                box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+                box-shadow: 0 10px 24px rgba(0,0,0,0.10);
                 background: #fff;
-            }
-            
-            /* gambar */
-            .doc-image {
+            }}
+
+            .doc-image {{
                 width: 100%;
-                height: 260px;
+                height: 240px;
                 object-fit: cover;
                 display: block;
-            }
-            
-            /* 🔥 OVERLAY HITAM GRADIENT */
-            .doc-overlay {
+            }}
+
+            .doc-date {{
                 position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                padding: 14px 16px;
-            
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            
-                background: linear-gradient(
-                    to top,
-                    rgba(0,0,0,0.85),
-                    rgba(0,0,0,0.55),
-                    rgba(0,0,0,0)
-                );
-            }
-            
-            /* JUDUL */
-            .doc-title {
+                right: 12px;
+                bottom: 12px;
+                background: rgba(0,0,0,0.65);
                 color: #fff;
-                font-size: 16px;
-                font-weight: 700;
-            }
-            
-            /* TANGGAL */
-            .doc-date {
-                background: rgba(255,255,255,0.92);
-                color: #2f3e34;
-                padding: 4px 10px;
-                border-radius: 999px;
+                padding: 6px 10px;
+                border-radius: 10px;
                 font-size: 12px;
                 font-weight: 600;
-            }
-            
-            /* HAPUS CAPTION ATAS */
-            .doc-caption {
-                display: none;
-            }
+            }}
+
+            .doc-caption {{
+                margin-top: 12px;
+                font-size: 18px;
+                font-weight: 700;
+                color: #2f3e34;
+                padding-left: 2px;
+            }}
+
+            .nav-btn {{
+                position: absolute;
+                top: 40%;
+                transform: translateY(-50%);
+                z-index: 10;
+                width: 46px;
+                height: 46px;
+                border: none;
+                border-radius: 999px;
+                background: rgba(40, 40, 40, 0.70);
+                color: white;
+                font-size: 26px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.25s ease;
+                backdrop-filter: blur(4px);
+            }}
+
+            .nav-btn:hover {{
+                background: rgba(20, 20, 20, 0.90);
+                transform: translateY(-50%) scale(1.08);
+            }}
+
+            .nav-left {{
+                left: 0;
+            }}
+
+            .nav-right {{
+                right: 0;
+            }}
         </style>
 
         <div class="netflix-wrap">
