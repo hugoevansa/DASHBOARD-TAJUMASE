@@ -211,14 +211,14 @@ with c1:
         x="Bulan",
         y="Produksi",
         color_discrete_sequence=["#8da98d"],
-        category_orders={"Bulan": bulan_order}   # ← pastikan plotly ikut urutan ini
+        category_orders={"Bulan": bulan_order}  
     )
 
     fig_bar.update_layout(
         height=300,
         margin=dict(t=20, b=80, l=20, r=20),
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(230, 239, 233, 0.60)',  
         hovermode="x unified",
         xaxis=dict(
             tickangle=-40,
@@ -289,7 +289,7 @@ with c3:
         height=300,
         margin=dict(t=20, b=80, l=20, r=20),
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(230, 239, 233, 0.60)', 
         showlegend=False,
         xaxis=dict(
             tickangle=-40,
