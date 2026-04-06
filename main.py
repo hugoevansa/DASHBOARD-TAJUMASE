@@ -451,14 +451,16 @@ else:
                 padding: 0 !important;
                 margin: 0 !important;
             }}
-
-            .olahan-caption {{
-                font-size: 18px;
+            
+             .olahan-caption {
+                font-size: 20px;
                 font-weight: 800;
                 color: #2f3e34;
-                margin-bottom: 10px;
-                padding-left: 12px;
-            }}
+                margin-bottom: 12px;
+            
+                text-align: center;
+                letter-spacing: 0.5px;
+            }
 
             .olahan-image-wrap {{
                 position: relative;
