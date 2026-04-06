@@ -29,26 +29,37 @@ pattern_bg = image_to_base64_local("Dokumentasi/Pattern PI.png")
 st.markdown(f"""
 <style>
 
-/* BACKGROUND */
+/* APP ROOT */
 .stApp {{
-    background:
-        linear-gradient(rgba(230, 239, 233, 0.92), rgba(244, 247, 245, 0.94)),
-        url("{pattern_bg}");
-    background-size: cover, 340px;
-    background-repeat: no-repeat, repeat;
-    background-position: center, top left;
-    background-attachment: fixed, fixed;
+    background: linear-gradient(135deg, #e6efe9, #f4f7f5);
+    position: relative;
 }}
 
-/* CONTAINER */
+/* PATTERN LAYER */
+.stApp::before {{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("{pattern_bg}");
+    background-repeat: repeat;
+    background-size: 280px;
+    background-position: top left;
+    opacity: 0.10;   /* naikkan kalau ingin lebih terlihat */
+    pointer-events: none;
+    z-index: 0;
+}}
+
+/* pastikan semua isi di atas pattern */
 .block-container {{
+    position: relative;
+    z-index: 1;
     padding-top: 1rem;
     padding-bottom: 0rem;
 }}
 
 /* KPI CARD */
 div[data-testid="stMetric"] {{
-    background-color: rgba(255,255,255,0.92);
+    background-color: rgba(255,255,255,0.94);
     padding: 16px;
     border-radius: 14px;
     border-left: 6px solid #8da98d;
@@ -67,13 +78,13 @@ h2, h3 {{
 
 /* DATAFRAME */
 [data-testid="stDataFrame"] {{
-    background-color: rgba(255,255,255,0.92);
+    background-color: rgba(255,255,255,0.94);
     border-radius: 12px;
 }}
 
 /* SELECTBOX */
 div[data-baseweb="select"] {{
-    background-color: rgba(255,255,255,0.95);
+    background-color: rgba(255,255,255,0.96);
     border-radius: 10px;
 }}
 
