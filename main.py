@@ -95,7 +95,7 @@ div[data-baseweb="select"] {{
 
 /* CHART CARD EFFECT */
 div[data-testid="stPlotlyChart"] {{
-    background-color: rgba(255,255,255,0.85) !important;
+    background-color: rgba(230, 239, 233, 0.60) !important;
     border-radius: 16px !important;
     padding: 12px !important;
     border: 1px solid rgba(141, 169, 141, 0.25) !important;
