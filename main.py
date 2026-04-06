@@ -43,7 +43,7 @@ st.markdown(f"""
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(230, 239, 233, 0.90);
+    background: rgba(230, 239, 233, 0.50);
     pointer-events: none;
     z-index: 0;
 }}
