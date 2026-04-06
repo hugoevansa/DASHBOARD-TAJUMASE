@@ -680,39 +680,21 @@ st.markdown("## PUPUK")
 data_pupuk = pd.DataFrame([
     {
         "caption": "Pupuk Phonska",
-        "file": "Pupuk/contoh 1.png",
+        "file": "Dokumentasi/Pupuk1.png",
         "Program": "Lembata",
         "tanggal": "2025-01-12"
     },
     {
-        "file": "Pupuk/contoh 2.png",
+        "caption": "Pupuk Urea",
+        "file": "Dokumentasi/Pupuk2.png",
         "Program": "Lembata",
-        "tanggal": "2025-02-15",
-        "caption": "Pupuk Urea"
+        "tanggal": "2025-02-15"
     },
     {
-        "file": "Pupuk/contoh 4.png",
+        "caption": "Pupuk Nitrea",
+        "file": "Dokumentasi/Pupuk3.png",
         "Program": "Ruteng",
-        "tanggal": "2025-03-20",
-        "caption": "Pupuk Nitrea"
-    },
-    {
-        "file": "Pupuk/Contoh 5.png",
-        "Program": "Sulteng",
-        "tanggal": "2025-01-12",
-        "caption": "Distribusi Pupuk"
-    },
-    {
-        "file": "Pupuk/Contoh 6.png",
-        "Program": "Giripurno",
-        "tanggal": "2025-04-15",
-        "caption": "Gudang Pupuk"
-    },
-    {
-        "file": "Pupuk/Contoh 7.png",
-        "Program": "Sumut",
-        "tanggal": "2025-03-20",
-        "caption": "Stok Pupuk"
+        "tanggal": "2025-03-20"
     }
 ])
 
@@ -816,19 +798,21 @@ else:
                 transform: scale(1.03);
             }}
 
-            .doc-image-wrap {{
-                position: relative;
-                border-radius: 18px;
-                overflow: hidden;
-                box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-                background: #fff;
-            }}
+           .doc-image-wrap {{
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+            background: transparent;   /* 🔥 ini kunci */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
 
             .doc-image {{
-                width: 100%;
-                height: 240px;
-                object-fit: cover;
-                display: block;
+            width: 100%;
+            height: 340px;     /* lebih besar */
+            object-fit: contain;  /* penting untuk PNG transparan */
             }}
 
             .doc-date {{
@@ -874,6 +858,12 @@ else:
             .nav-btn:hover {{
                 background: rgba(20, 20, 20, 0.90);
                 transform: translateY(-50%) scale(1.08);
+            }}
+            
+            .doc-card {{
+            flex: 0 0 38%;   /* lebih lebar */
+            min-width: 360px;
+            max-width: 500px;
             }}
 
             .nav-left {{
