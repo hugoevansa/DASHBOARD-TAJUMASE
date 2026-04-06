@@ -4,98 +4,25 @@ import plotly.express as px
 import base64
 from pathlib import Path
 import streamlit.components.v1 as components
-import base64
-from pathlib import Path
-
-
-def get_base64_image(image_path):
-    path = Path(image_path)
-    if not path.exists():
-        return ""
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
-        
-pattern_base64 = get_base64_image("Dokumentasi/Pattern PI.png")
 
 # CONFIG
 st.set_page_config(page_title="TAJUMASE", layout="wide")
 
-if pattern_base64:
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background: linear-gradient(135deg, #e6efe9, #f4f7f5);
-        }}
-
-        .custom-pattern-bg {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            background-image:
-                linear-gradient(rgba(230,239,233,0.78), rgba(244,247,245,0.82)),
-                url("data:image/png;base64,{pattern_base64}");
-            background-repeat: repeat;
-            background-size: auto, 260px;
-            background-position: center, top left;
-            opacity: 0.35;
-        }}
-
-        .block-container {{
-            padding-top: 1rem;
-            padding-bottom: 0rem;
-        }}
-
-        div[data-testid="stMetric"] {{
-            background-color: rgba(255,255,255,0.94);
-            padding: 16px;
-            border-radius: 14px;
-            border-left: 6px solid #8da98d;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }}
-
-        h1 {{
-            color: #5f7a61;
-        }}
-
-        h2, h3 {{
-            color: #6b8f71;
-        }}
-
-        [data-testid="stDataFrame"] {{
-            background-color: rgba(255,255,255,0.94);
-            border-radius: 12px;
-        }}
-
-        div[data-baseweb="select"] {{
-            background-color: rgba(255,255,255,0.95);
-            border-radius: 10px;
-        }}
-        </style>
-
-        <div class="custom-pattern-bg"></div>
-        """,
-        unsafe_allow_html=True
-    )
-else:
-    st.markdown(
-        """
-        <style>
-        .stApp {
-            background: linear-gradient(135deg, #e6efe9, #f4f7f5);
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 # ======================
 # 🎨 SAGE THEME STYLE
 # ======================
+def image_to_base64_local(image_path):
+    path = Path(image_path)
+    if not path.exists():
+        return ""
+    with open(path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    ext = path.suffix.lower().replace(".", "")
+    if ext == "jpg":
+        ext = "jpeg"
+    return f"data:image/{ext};base64,{encoded}"
 
+pattern_bg = image_to_base64_local("Dokumentasi/Pattern PI.png")
 
 st.markdown(f"""
 <style>
@@ -104,7 +31,7 @@ st.markdown(f"""
 .stApp {{
     background:
         linear-gradient(rgba(230, 239, 233, 0.92), rgba(244, 247, 245, 0.94)),
-        url("{pattern_base64}");
+        url("{pattern_bg}");
     background-size: cover, 340px;
     background-repeat: no-repeat, repeat;
     background-position: center, top left;
