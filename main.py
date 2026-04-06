@@ -282,7 +282,7 @@ with c3:
         x="Komoditas",
         y="Produksi",
         color="Komoditas",
-        color_discrete_sequence=["#8da98d","#a3b8a3","#c7d9c7","#b8ccb8","#d4e4d4","#e8f0e8","#9db89d","#7a9e7a","#6b8f6b","#5c805c","#4d704d"]
+        color_discrete_sequence=["#5f7a61","#6b8f6b","#7a9e7a","#8da98d","#4d704d","#3d5c3d","#9db89d","#a3b8a3","#5c805c","#4a6b4a","#3a5a3a"]
     )
 
     fig_compare.update_layout(
