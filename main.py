@@ -123,7 +123,7 @@ df = pd.read_excel("data_panen_dummy.xlsx")
 # ======================
 # LOAD LOGO
 # ======================
-logo_path = "logo.png"  # ← Ganti sesuai nama file logo kamu
+logo_path = "Dokumentasi/Pupuk4.png"  # ← Ganti sesuai nama file logo kamu
 logo_b64 = image_to_base64_local(logo_path)
 
 # ======================
