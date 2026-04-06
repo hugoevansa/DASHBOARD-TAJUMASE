@@ -99,7 +99,7 @@ div[data-testid="stPlotlyChart"] {{
     border-radius: 16px !important;
     padding: 12px !important;
     border: none !important;
-    box-shadow: 0 4px 20px rgba(141, 169, 141, 0.35), 0 1px 6px rgba(0,0,0,0.06) !important;
+    box-shadow: 0 4px 20px rgba(141, 169, 141, 0.75), 0 1px 6px rgba(0,0,0,0.06) !important;
     transition: all 0.25s ease;
 }}
 
