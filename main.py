@@ -4,6 +4,8 @@ import plotly.express as px
 import base64
 from pathlib import Path
 import streamlit.components.v1 as components
+import base64
+from pathlib import Path
 
 # CONFIG
 st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
@@ -11,50 +13,68 @@ st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
 # ======================
 # 🎨 SAGE THEME STYLE
 # ======================
-st.markdown("""
+def image_to_base64_local(image_path):
+    path = Path(image_path)
+    if not path.exists():
+        return ""
+    with open(path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    ext = path.suffix.lower().replace(".", "")
+    if ext == "jpg":
+        ext = "jpeg"
+    return f"data:image/{ext};base64,{encoded}"
+
+pattern_bg = image_to_base64_local("Dokumentasi/Pattern Pi.png")
+st.markdown(f"""
 <style>
 
 /* BACKGROUND */
-.stApp {
-    background: linear-gradient(135deg, #e6efe9, #f4f7f5);
-}
+.stApp {{
+    background:
+        linear-gradient(rgba(230, 239, 233, 0.92), rgba(244, 247, 245, 0.94)),
+        url("{pattern_bg}");
+    background-size: cover, 340px;
+    background-repeat: no-repeat, repeat;
+    background-position: center, top left;
+    background-attachment: fixed, fixed;
+}}
 
 /* CONTAINER */
-.block-container {
+.block-container {{
     padding-top: 1rem;
     padding-bottom: 0rem;
-}
+}}
 
 /* KPI CARD */
-div[data-testid="stMetric"] {
-    background-color: #ffffff;
+div[data-testid="stMetric"] {{
+    background-color: rgba(255,255,255,0.92);
     padding: 16px;
     border-radius: 14px;
     border-left: 6px solid #8da98d;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-}
+}}
 
 /* TITLE */
-h1 {
+h1 {{
     color: #5f7a61;
-}
+}}
 
 /* SUBTITLE */
-h2, h3 {
+h2, h3 {{
     color: #6b8f71;
-}
+}}
 
 /* DATAFRAME */
-[data-testid="stDataFrame"] {
-    background-color: white;
+[data-testid="stDataFrame"] {{
+    background-color: rgba(255,255,255,0.92);
     border-radius: 12px;
-}
+}}
 
 /* SELECTBOX */
-div[data-baseweb="select"] {
-    background-color: white;
+div[data-baseweb="select"] {{
+    background-color: rgba(255,255,255,0.95);
     border-radius: 10px;
-}
+}}
 
 </style>
 """, unsafe_allow_html=True)
