@@ -590,6 +590,87 @@ else:
 
         components.html(carousel_html, height=380)
 
+
+# ======================
+# CHART PRODUK OLAHAN
+# ======================
+c4, c5 = st.columns(2)
+
+# ===== C4: PRODUKSI PRODUK OLAHAN =====
+with c4:
+    st.subheader("Produksi Produk Olahan")
+
+    produk_olahan_df = df_filtered.groupby("Produk_Olahan", as_index=False)["Data_Produksi_Olahan"].sum()
+
+    fig_c4 = px.bar(
+        produk_olahan_df,
+        x="Produk_Olahan",
+        y="Data_Produksi_Olahan",
+        color="Produk_Olahan",
+        color_discrete_sequence=["#5f7a61","#6b8f6b","#7a9e7a","#8da98d","#4d704d","#3d5c3d","#9db89d","#a3b8a3","#5c805c","#4a6b4a","#3a5a3a"]
+    )
+
+    fig_c4.update_layout(
+        height=300,
+        margin=dict(t=20, b=80, l=20, r=20),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(230, 239, 233, 0.60)',
+        showlegend=False,
+        xaxis=dict(
+            tickangle=-40,
+            tickfont=dict(size=10),
+            automargin=True,
+            title_standoff=25,
+            title_text="Produk Olahan"
+        ),
+        yaxis=dict(
+            tickfont=dict(size=10),
+            automargin=True,
+            title_standoff=15,
+            title_text="Produksi (Kg)"
+        )
+    )
+
+    st.plotly_chart(fig_c4, use_container_width=True)
+
+# ===== C5: PENJUALAN PRODUK OLAHAN =====
+with c5:
+    st.subheader("Penjualan Produk Olahan")
+
+    penjualan_olahan_df = df_filtered.groupby("Produk_Olahan", as_index=False)["Data_Penjualan_Olahan"].sum()
+
+    fig_c5 = px.bar(
+        penjualan_olahan_df,
+        x="Produk_Olahan",
+        y="Data_Penjualan_Olahan",
+        color="Produk_Olahan",
+        color_discrete_sequence=["#3d5c3d","#4a6b4a","#5c805c","#6b8f6b","#3a5a3a","#5f7a61","#7a9e7a","#8da98d","#4d704d","#9db89d","#a3b8a3"]
+    )
+
+    fig_c5.update_layout(
+        height=300,
+        margin=dict(t=20, b=80, l=20, r=20),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(230, 239, 233, 0.60)',
+        showlegend=False,
+        xaxis=dict(
+            tickangle=-40,
+            tickfont=dict(size=10),
+            automargin=True,
+            title_standoff=25,
+            title_text="Produk Olahan"
+        ),
+        yaxis=dict(
+            tickfont=dict(size=10),
+            automargin=True,
+            title_standoff=15,
+            title_text="Penjualan (Bulan)"
+        )
+    )
+
+    st.plotly_chart(fig_c5, use_container_width=True)
+
+
 # ======================
 # PUPUK (SWIPE VERSION)
 # ======================
