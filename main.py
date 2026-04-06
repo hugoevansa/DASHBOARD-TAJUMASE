@@ -727,11 +727,13 @@ else:
             }}
 
             .pupuk-caption {{
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: 800;
                 color: #2f3e34;
-                margin-bottom: 10px;
-                padding-left: 12px;
+                margin-bottom: 12px;
+            
+                text-align: center;
+                letter-spacing: 0.5px;
             }}
 
             .pupuk-image-wrap {{
