@@ -985,11 +985,13 @@ else:
 
         cards_html += f"""
         <div class="doc-card">
-            <div class="doc-caption">{row["caption"]}</div>
-        
             <div class="doc-image-wrap">
                 <img src="{img_src}" class="doc-image"/>
-                <div class="doc-date">{tanggal_label}</div>
+        
+                <div class="doc-overlay">
+                    <div class="doc-title">{row["caption"]}</div>
+                    <div class="doc-date">{tanggal_label}</div>
+                </div>
             </div>
         </div>
         """
@@ -1028,40 +1030,65 @@ else:
                 transform: scale(1.03);
             }}
 
-            .doc-image-wrap {{
+            .doc-image-wrap {
                 position: relative;
                 border-radius: 18px;
                 overflow: hidden;
-                box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+                box-shadow: 0 12px 28px rgba(0,0,0,0.12);
                 background: #fff;
-            }}
-
-            .doc-image {{
+            }
+            
+            .doc-image {
                 width: 100%;
-                height: 240px;
+                height: 260px;
                 object-fit: cover;
                 display: block;
-            }}
-
-            .doc-date {{
+                transition: transform 0.4s ease;
+            }
+            
+            .doc-card:hover .doc-image {
+                transform: scale(1.05);
+            }
+            
+            /* bayangan hitam di bawah gambar */
+            .doc-overlay {
                 position: absolute;
-                right: 12px;
-                bottom: 12px;
-                background: rgba(0,0,0,0.65);
-                color: #fff;
-                padding: 6px 10px;
-                border-radius: 10px;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                padding: 14px 16px;
+            
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            
+                background: linear-gradient(
+                    to top,
+                    rgba(0,0,0,0.88),
+                    rgba(0,0,0,0.55),
+                    rgba(0,0,0,0.00)
+                );
+            }
+            
+            .doc-title {
+                color: white;
+                font-size: 16px;
+                font-weight: 700;
+            }
+            
+            .doc-date {
+                background: rgba(255,255,255,0.92);
+                color: #2f3e34;
+                padding: 5px 12px;
+                border-radius: 999px;
                 font-size: 12px;
                 font-weight: 600;
-            }}
-
-            .doc-caption {{
-                margin-top: 12px;
-                font-size: 18px;
-                font-weight: 700;
-                color: #2f3e34;
-                padding-left: 2px;
-            }}
+            }
+            
+            /* caption lama di atas gambar dimatikan */
+            .doc-caption {
+                display: none;
+            }
 
             .nav-btn {{
                 position: absolute;
