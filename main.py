@@ -98,8 +98,8 @@ div[data-testid="stPlotlyChart"] {{
     background-color: rgba(230, 239, 233, 0.60) !important;
     border-radius: 16px !important;
     padding: 12px !important;
-    border: 1px solid rgba(141, 169, 141, 0.25) !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba(141, 169, 141, 0.35), 0 1px 6px rgba(0,0,0,0.06) !important;
     transition: all 0.25s ease;
 }}
 
