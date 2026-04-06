@@ -8,7 +8,7 @@ import base64
 from pathlib import Path
 
 # CONFIG
-st.set_page_config(page_title="Dashboard Panen Rempah", layout="wide")
+st.set_page_config(page_title="TAJUMASE", layout="wide")
 
 # ======================
 # 🎨 SAGE THEME STYLE
