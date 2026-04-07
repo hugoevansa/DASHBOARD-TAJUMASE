@@ -322,6 +322,131 @@ with c3:
     )
 
     st.plotly_chart(fig_compare, use_container_width=True)
+
+# ======================
+# TIME SERIES + KETERANGAN
+# ======================
+ts_col1, ts_col2 = st.columns([2, 1])
+
+with ts_col1:
+    st.subheader("Produksi & Anggaran Bulanan")
+
+    bulanan_ts = df_filtered.groupby("Bulan", as_index=False).agg({
+        "Produksi": "sum",
+        "Anggaran": "sum"
+    })
+
+    bulan_order = ["January","February","March","April","May","June",
+                   "July","August","September","October","November","December"]
+
+    bulan_short_map = {
+        "January": "Jan",
+        "February": "Feb",
+        "March": "Mar",
+        "April": "Apr",
+        "May": "May",
+        "June": "Jun",
+        "July": "Jul",
+        "August": "Aug",
+        "September": "Sep",
+        "October": "Oct",
+        "November": "Nov",
+        "December": "Dec"
+    }
+
+    bulanan_ts["Bulan"] = pd.Categorical(
+        bulanan_ts["Bulan"],
+        categories=bulan_order,
+        ordered=True
+    )
+    bulanan_ts = bulanan_ts.sort_values("Bulan")
+    bulanan_ts["Bulan_Short"] = bulanan_ts["Bulan"].map(bulan_short_map)
+
+    fig_ts = go.Figure()
+
+    # LINE PRODUKSI
+    fig_ts.add_trace(
+        go.Scatter(
+            x=bulanan_ts["Bulan_Short"],
+            y=bulanan_ts["Produksi"],
+            mode="lines+markers",
+            name="Produksi",
+            line=dict(color="#4f8fc0", width=3, shape="spline"),
+            marker=dict(size=7, color="#6ec1ff"),
+            hovertemplate="<b>%{x}</b><br>Produksi: %{y:,.0f} Kg<extra></extra>"
+        )
+    )
+
+    # LINE ANGGARAN
+    fig_ts.add_trace(
+        go.Scatter(
+            x=bulanan_ts["Bulan_Short"],
+            y=bulanan_ts["Anggaran"],
+            mode="lines+markers",
+            name="Anggaran",
+            line=dict(color="#f08a3c", width=3, shape="spline"),
+            marker=dict(size=7, color="#ff9d4d"),
+            hovertemplate="<b>%{x}</b><br>Anggaran: Rp %{y:,.0f}<extra></extra>"
+        )
+    )
+
+    fig_ts.update_layout(
+        height=320,
+        margin=dict(t=20, b=40, l=20, r=20),
+        paper_bgcolor="rgba(17,24,39,0.95)",
+        plot_bgcolor="rgba(17,24,39,0.95)",
+        hovermode="x unified",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(color="white")
+        ),
+        xaxis=dict(
+            title="",
+            tickfont=dict(size=11, color="white"),
+            showgrid=False,
+            zeroline=False
+        ),
+        yaxis=dict(
+            title="Nilai",
+            tickfont=dict(size=10, color="white"),
+            title_font=dict(color="white"),
+            gridcolor="rgba(255,255,255,0.10)",
+            zeroline=False
+        ),
+        font=dict(color="white")
+    )
+
+    st.plotly_chart(fig_ts, use_container_width=True)
+
+with ts_col2:
+    st.markdown("""
+    <div style="
+        background: rgba(255,255,255,0.88);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        height: 320px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    ">
+        <h4 style="margin-top:0; color:#5f7a61;">Keterangan</h4>
+        <p style="margin-bottom:10px; color:#2f3e34;">
+            <b>Produksi</b> ditampilkan sebagai garis biru berdasarkan total hasil panen per bulan.
+        </p>
+        <p style="margin-bottom:10px; color:#2f3e34;">
+            <b>Anggaran</b> ditampilkan sebagai garis oranye berdasarkan total anggaran per bulan.
+        </p>
+        <p style="margin-bottom:0; color:#2f3e34;">
+            Grafik ini mengikuti filter <b>Program</b>, <b>Tahun</b>, dan <b>Komoditas</b> yang dipilih pada dashboard.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
 # ======================
 # WILAYAH
 # ======================
