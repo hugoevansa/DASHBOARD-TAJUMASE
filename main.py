@@ -213,92 +213,41 @@ c1, c2, c3 = st.columns(3)
 # ===== BAR BULANAN (ikut komoditas) =====
 # ===== PRODUKSI + ANGGARAN BULANAN =====
 with c1:
-    st.subheader("Produksi & Anggaran Bulanan")
+    st.subheader("Produksi Bulanan (Kg)")
 
-    bulanan = df_filtered.groupby("Bulan", as_index=False).agg({
-        "Produksi": "sum",
-        "Anggaran": "sum"
-    })
+    bulanan = df_filtered.groupby("Bulan", as_index=False)["Produksi"].sum()
 
+    # ← Sort by urutan bulan Januari - Desember
     bulan_order = ["January","February","March","April","May","June",
                    "July","August","September","October","November","December"]
-
-    bulanan["Bulan"] = pd.Categorical(
-        bulanan["Bulan"],
-        categories=bulan_order,
-        ordered=True
-    )
+    bulanan["Bulan"] = pd.Categorical(bulanan["Bulan"], categories=bulan_order, ordered=True)
     bulanan = bulanan.sort_values("Bulan")
 
-    fig_bar = make_subplots(specs=[[{"secondary_y": True}]])
-
-    # BAR HIJAU = PRODUKSI
-    fig_bar.add_trace(
-        go.Bar(
-            x=bulanan["Bulan"],
-            y=bulanan["Produksi"],
-            name="Produksi",
-            marker=dict(
-                color="rgba(141,169,141,0.75)",
-                line=dict(color="rgba(141,169,141,1)", width=1)
-            ),
-            hovertemplate="<b>%{x}</b><br>Produksi: %{y:,.0f} Kg<extra></extra>"
-        ),
-        secondary_y=False
-    )
-
-    # GARIS OREN = ANGGARAN
-    fig_bar.add_trace(
-        go.Scatter(
-            x=bulanan["Bulan"],
-            y=bulanan["Anggaran"],
-            name="Anggaran",
-            mode="lines+markers",
-            line=dict(color="#f08a3c", width=3, shape="spline"),
-            marker=dict(size=8, color="#f08a3c"),
-            hovertemplate="<b>%{x}</b><br>Anggaran: Rp %{y:,.0f}<extra></extra>"
-        ),
-        secondary_y=True
+    fig_bar = px.bar(
+        bulanan,
+        x="Bulan",
+        y="Produksi",
+        color_discrete_sequence=["#8da98d"],
+        category_orders={"Bulan": bulan_order}  
     )
 
     fig_bar.update_layout(
-        height=320,
-        margin=dict(t=20, b=60, l=20, r=20),
-        paper_bgcolor="rgba(18,24,32,0.95)",
-        plot_bgcolor="rgba(18,24,32,0.95)",
+        height=300,
+        margin=dict(t=20, b=80, l=20, r=20),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(230, 239, 233, 0.60)',  
         hovermode="x unified",
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1,
-            font=dict(color="white")
-        ),
         xaxis=dict(
-            title="Bulan",
-            tickangle=-35,
-            tickfont=dict(size=10, color="white"),
-            title_font=dict(color="white"),
-            showgrid=False,
-            zeroline=False
+            tickangle=-40,
+            tickfont=dict(size=10),
+            automargin=True,
+            title_standoff=25
         ),
         yaxis=dict(
-            title="Produksi (Kg)",
-            tickfont=dict(size=10, color="white"),
-            title_font=dict(color="white"),
-            gridcolor="rgba(255,255,255,0.10)",
-            zeroline=False
-        ),
-        font=dict(color="white")
-    )
-
-    fig_bar.update_yaxes(
-        title_text="Anggaran (Rp)",
-        secondary_y=True,
-        tickfont=dict(size=10, color="#f08a3c"),
-        title_font=dict(color="#f08a3c"),
-        showgrid=False
+            tickfont=dict(size=10),
+            automargin=True,
+            title_standoff=15
+        )
     )
 
     st.plotly_chart(fig_bar, use_container_width=True)
