@@ -1112,68 +1112,70 @@ else:
         </div>
 
                <script>
-            const track = document.getElementById("docs-track");
-            let isScrolling = false;
-        
-            function getCardWidth() {
-                const card = track.querySelector(".doc-card");
-                if (!card) return 0;
-        
-                const style = window.getComputedStyle(track);
-                const gap = parseInt(style.columnGap || style.gap || 20);
-                return card.offsetWidth + gap;
-            }
-        
-            function scrollDocs(direction) {
-                if (isScrolling) return;
-        
-                const cardWidth = getCardWidth();
-                if (!cardWidth) return;
-        
-                const maxScrollLeft = track.scrollWidth - track.clientWidth;
-                const current = track.scrollLeft;
-                const tolerance = 5;
-        
-                isScrolling = true;
-        
-                // Kalau klik kanan saat sudah di ujung → balik ke awal
-                if (direction > 0 && current >= maxScrollLeft - tolerance) {
-                    track.scrollTo({
-                        left: 0,
+            var track = document.getElementById("docs-track");
+            var originalCards = track.innerHTML;
+            
+            // Duplikasi 3x untuk infinite loop
+            track.innerHTML = originalCards + originalCards + originalCards;
+            
+            // Set posisi awal ke set tengah
+            var oneSetWidth = track.scrollWidth / 3;
+            track.scrollLeft = oneSetWidth;
+
+            var autoScroll;
+            var cardWidth = 0;
+            var gap = 20;
+
+            function getCardMetrics() {{
+                var card = track.querySelector(".doc-card");
+                if (!card) return;
+                var style = window.getComputedStyle(track);
+                gap = parseInt(style.columnGap || style.gap || 20);
+                cardWidth = card.offsetWidth + gap;
+            }}
+
+            function startAutoScroll() {{
+                getCardMetrics();
+                autoScroll = setInterval(function() {{
+                    track.scrollBy({{
+                        left: cardWidth,
                         behavior: "smooth"
-                    });
-        
-                    setTimeout(() => {
-                        isScrolling = false;
-                    }, 500);
-        
-                    return;
-                }
-        
-                // Kalau klik kiri saat sudah di awal → lompat ke ujung
-                if (direction < 0 && current <= tolerance) {
-                    track.scrollTo({
-                        left: maxScrollLeft,
-                        behavior: "smooth"
-                    });
-        
-                    setTimeout(() => {
-                        isScrolling = false;
-                    }, 500);
-        
-                    return;
-                }
-        
-                // Scroll normal
-                track.scrollBy({
+                    }});
+                }}, 2500);
+            }}
+
+            function stopAutoScroll() {{
+                clearInterval(autoScroll);
+            }}
+
+            // Teleport seamless setelah scroll selesai
+            track.addEventListener("scrollend", function() {{
+                var oneSet = track.scrollWidth / 3;
+                if (track.scrollLeft >= oneSet * 2) {{
+                    track.scrollLeft -= oneSet;
+                }} else if (track.scrollLeft < oneSet) {{
+                    track.scrollLeft += oneSet;
+                }}
+            }});
+
+            // Pause saat hover
+            track.addEventListener("mouseenter", stopAutoScroll);
+            track.addEventListener("mouseleave", startAutoScroll);
+
+            // Tombol manual tetap bisa dipakai
+            function scrollDocs(direction) {{
+                stopAutoScroll();
+                getCardMetrics();
+                track.scrollBy({{
                     left: direction * cardWidth,
                     behavior: "smooth"
-                });
-        
-                setTimeout(() => {
-                    isScrolling = false;
-                }, 500);
-            }
+                }});
+                // Resume auto scroll setelah 3 detik
+                setTimeout(startAutoScroll, 3000);
+            }}
+
+            // Mulai auto scroll
+            startAutoScroll();
         </script>
         """
 
