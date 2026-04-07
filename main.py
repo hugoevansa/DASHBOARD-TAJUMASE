@@ -1112,20 +1112,40 @@ else:
         </div>
 
         <script>
+            var track = document.getElementById("docs-track");
+            var cards = track.innerHTML;
+            
+            track.innerHTML = cards + cards + cards;
+            
+            window.addEventListener("load", function() {{
+                var oneSetWidth = track.scrollWidth / 3;
+                track.scrollLeft = oneSetWidth;
+            }});
+
             function scrollDocs(direction) {{
-                const track = document.getElementById("docs-track");
-                const card = track.querySelector(".doc-card");
+                var card = track.querySelector(".doc-card");
                 if (!card) return;
 
-                const style = window.getComputedStyle(track);
-                const gap = parseInt(style.columnGap || style.gap || 20);
-                const scrollAmount = card.offsetWidth + gap;
+                var style = window.getComputedStyle(track);
+                var gap = parseInt(style.columnGap || style.gap || 20);
+                var scrollAmount = card.offsetWidth + gap;
 
                 track.scrollBy({{
                     left: direction * scrollAmount,
                     behavior: "smooth"
                 }});
             }}
+
+            track.addEventListener("scroll", function() {{
+                var oneSetWidth = track.scrollWidth / 3;
+                
+                if (track.scrollLeft >= oneSetWidth * 2) {{
+                    track.scrollLeft -= oneSetWidth;
+                }}
+                if (track.scrollLeft <= 0) {{
+                    track.scrollLeft += oneSetWidth;
+                }}
+            }});
         </script>
         """
 
