@@ -1111,69 +1111,45 @@ else:
             </div>
         </div>
 
-                <script>
-            const track = document.getElementById("docs-track");
-            let isAdjusting = false;
-        
-            function scrollDocs(direction) {
-                const card = track.querySelector(".doc-card");
+        <script>
+            var track = document.getElementById("docs-track");
+
+            function scrollDocs(direction) {{
+                var card = track.querySelector(".doc-card");
                 if (!card) return;
-        
-                const style = window.getComputedStyle(track);
-                const gap = parseInt(style.columnGap || style.gap || 20);
-                const scrollAmount = card.offsetWidth + gap;
-        
-                track.scrollBy({
+
+                var style = window.getComputedStyle(track);
+                var gap = parseInt(style.columnGap || style.gap || 20);
+                var scrollAmount = card.offsetWidth + gap;
+
+                track.scrollBy({{
                     left: direction * scrollAmount,
                     behavior: "smooth"
-                });
-            }
-        
-            function setupInfiniteScroll() {
-                const cards = track.querySelectorAll(".doc-card");
-                if (cards.length < 2) return;
-        
-                const firstClone = cards[0].cloneNode(true);
-                const lastClone = cards[cards.length - 1].cloneNode(true);
-        
-                track.appendChild(firstClone);
-                track.insertBefore(lastClone, track.firstChild);
-        
-                // set posisi awal ke item asli pertama
-                const style = window.getComputedStyle(track);
-                const gap = parseInt(style.columnGap || style.gap || 20);
-                const cardWidth = cards[0].offsetWidth + gap;
-        
-                track.scrollLeft = cardWidth;
-            }
-        
-            track.addEventListener("scroll", () => {
-                if (isAdjusting) return;
-        
-                const cards = track.querySelectorAll(".doc-card");
-                if (cards.length < 2) return;
-        
-                const style = window.getComputedStyle(track);
-                const gap = parseInt(style.columnGap || style.gap || 20);
-                const cardWidth = cards[0].offsetWidth + gap;
-        
-                // ke kiri (melewati clone awal)
-                if (track.scrollLeft <= 0) {
-                    isAdjusting = true;
-                    track.scrollLeft = (cards.length - 2) * cardWidth;
-                    setTimeout(() => isAdjusting = false, 50);
-                }
-        
-                // ke kanan (melewati clone akhir)
-                if (track.scrollLeft >= (cards.length - 1) * cardWidth) {
-                    isAdjusting = true;
-                    track.scrollLeft = cardWidth;
-                    setTimeout(() => isAdjusting = false, 50);
-                }
-            });
-        
-            // INIT
-            setTimeout(setupInfiniteScroll, 100);
+                }});
+            }}
+
+            track.addEventListener("scroll", function() {{
+                var cards = track.querySelectorAll(".doc-card");
+                var first = cards[0];
+                var last = cards[cards.length - 1];
+                var card = first;
+
+                var style = window.getComputedStyle(track);
+                var gap = parseInt(style.columnGap || style.gap || 20);
+                var cardWidth = card.offsetWidth + gap;
+
+                // Scroll ke kanan melewati batas → pindahkan card pertama ke belakang
+                if (track.scrollLeft + track.offsetWidth >= track.scrollWidth - cardWidth) {{
+                    track.appendChild(first);
+                    track.scrollLeft -= cardWidth;
+                }}
+
+                // Scroll ke kiri melewati batas → pindahkan card terakhir ke depan
+                if (track.scrollLeft <= cardWidth) {{
+                    track.insertBefore(last, track.firstChild);
+                    track.scrollLeft += cardWidth;
+                }}
+            }});
         </script>
         """
 
