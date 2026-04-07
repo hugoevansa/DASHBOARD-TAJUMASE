@@ -1111,8 +1111,16 @@ else:
             </div>
         </div>
 
-        <script>
+       <script>
             var track = document.getElementById("docs-track");
+            var originalCards = track.innerHTML;
+            
+            // Duplikasi: [clone] [original] [clone]
+            track.innerHTML = originalCards + originalCards + originalCards;
+            
+            // Langsung set posisi ke set tengah (tanpa animasi)
+            var oneSetWidth = track.scrollWidth / 3;
+            track.scrollLeft = oneSetWidth;
 
             function scrollDocs(direction) {{
                 var card = track.querySelector(".doc-card");
@@ -1128,26 +1136,16 @@ else:
                 }});
             }}
 
-            track.addEventListener("scroll", function() {{
-                var cards = track.querySelectorAll(".doc-card");
-                var first = cards[0];
-                var last = cards[cards.length - 1];
-                var card = first;
+            track.addEventListener("scrollend", function() {{
+                var oneSetWidth = track.scrollWidth / 3;
 
-                var style = window.getComputedStyle(track);
-                var gap = parseInt(style.columnGap || style.gap || 20);
-                var cardWidth = card.offsetWidth + gap;
-
-                // Scroll ke kanan melewati batas → pindahkan card pertama ke belakang
-                if (track.scrollLeft + track.offsetWidth >= track.scrollWidth - cardWidth) {{
-                    track.appendChild(first);
-                    track.scrollLeft -= cardWidth;
+                // Kalau sudah masuk ke set ke-3, teleport ke set ke-1 (posisi sama)
+                if (track.scrollLeft >= oneSetWidth * 2) {{
+                    track.scrollLeft -= oneSetWidth;
                 }}
-
-                // Scroll ke kiri melewati batas → pindahkan card terakhir ke depan
-                if (track.scrollLeft <= cardWidth) {{
-                    track.insertBefore(last, track.firstChild);
-                    track.scrollLeft += cardWidth;
+                // Kalau sudah masuk ke set ke-1, teleport ke set ke-2 (posisi sama)
+                else if (track.scrollLeft < oneSetWidth) {{
+                    track.scrollLeft += oneSetWidth;
                 }}
             }});
         </script>
