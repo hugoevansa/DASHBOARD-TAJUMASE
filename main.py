@@ -432,8 +432,6 @@ with ts_col1:
     st.plotly_chart(fig_ts, use_container_width=True)
 
 with ts_col2:
-    st.markdown("<div style='height: 54px;'></div>", unsafe_allow_html=True)
-
     st.markdown("""
     <div style="
         background: rgba(255,255,255,0.88);
@@ -441,20 +439,23 @@ with ts_col2:
         padding: 18px;
         box-shadow: 0 6px 18px rgba(0,0,0,0.06);
         min-height: 266px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
     ">
-        <h4 style="margin-top:0; color:#5f7a61;">Keterangan</h4>
-        <p style="margin-bottom:10px; color:#2f3e34;">
-            <b>Produksi</b> ditampilkan sebagai bar chart berdasarkan total hasil panen per bulan.
-        </p>
-        <p style="margin-bottom:10px; color:#2f3e34;">
-            <b>Anggaran</b> ditampilkan sebagai garis oranye berdasarkan total anggaran per bulan.
-        </p>
-        <p style="margin-bottom:0; color:#2f3e34;">
-            Grafik ini mengikuti filter <b>Program</b>, <b>Tahun</b>, dan <b>Komoditas</b> yang dipilih pada dashboard.
-        </p>
+
+    <h4 style="margin-top:0; color:#5f7a61;">Ringkasan</h4>
+
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:15px;">
+        <div><b>Total Produksi:</b> {total_panen:,.0f} Kg</div>
+        <div><b>Total Anggaran:</b> Rp {anggaran:,.0f}</div>
+        <div><b>Rata-rata Bulanan:</b> {total_panen/12:,.0f} Kg</div>
+    </div>
+
+    <hr style="opacity:0.2;"/>
+
+    <div style="font-size:13px;">
+        ⬆ Produksi tertinggi: <b>{bulanan_ts.loc[bulanan_ts['Produksi'].idxmax(),'Bulan_Short']}</b><br>
+        ⬇ Terendah: <b>{bulanan_ts.loc[bulanan_ts['Produksi'].idxmin(),'Bulan_Short']}</b>
+    </div>
+
     </div>
     """, unsafe_allow_html=True)
     
