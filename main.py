@@ -1111,43 +1111,69 @@ else:
             </div>
         </div>
 
-       <script>
-            var track = document.getElementById("docs-track");
-            var originalCards = track.innerHTML;
-            
-            // Duplikasi: [clone] [original] [clone]
-            track.innerHTML = originalCards + originalCards + originalCards;
-            
-            // Langsung set posisi ke set tengah (tanpa animasi)
-            var oneSetWidth = track.scrollWidth / 3;
-            track.scrollLeft = oneSetWidth;
-
-            function scrollDocs(direction) {{
-                var card = track.querySelector(".doc-card");
-                if (!card) return;
-
-                var style = window.getComputedStyle(track);
-                var gap = parseInt(style.columnGap || style.gap || 20);
-                var scrollAmount = card.offsetWidth + gap;
-
-                track.scrollBy({{
-                    left: direction * scrollAmount,
+               <script>
+            const track = document.getElementById("docs-track");
+            let isScrolling = false;
+        
+            function getCardWidth() {
+                const card = track.querySelector(".doc-card");
+                if (!card) return 0;
+        
+                const style = window.getComputedStyle(track);
+                const gap = parseInt(style.columnGap || style.gap || 20);
+                return card.offsetWidth + gap;
+            }
+        
+            function scrollDocs(direction) {
+                if (isScrolling) return;
+        
+                const cardWidth = getCardWidth();
+                if (!cardWidth) return;
+        
+                const maxScrollLeft = track.scrollWidth - track.clientWidth;
+                const current = track.scrollLeft;
+                const tolerance = 5;
+        
+                isScrolling = true;
+        
+                // Kalau klik kanan saat sudah di ujung → balik ke awal
+                if (direction > 0 && current >= maxScrollLeft - tolerance) {
+                    track.scrollTo({
+                        left: 0,
+                        behavior: "smooth"
+                    });
+        
+                    setTimeout(() => {
+                        isScrolling = false;
+                    }, 500);
+        
+                    return;
+                }
+        
+                // Kalau klik kiri saat sudah di awal → lompat ke ujung
+                if (direction < 0 && current <= tolerance) {
+                    track.scrollTo({
+                        left: maxScrollLeft,
+                        behavior: "smooth"
+                    });
+        
+                    setTimeout(() => {
+                        isScrolling = false;
+                    }, 500);
+        
+                    return;
+                }
+        
+                // Scroll normal
+                track.scrollBy({
+                    left: direction * cardWidth,
                     behavior: "smooth"
-                }});
-            }}
-
-            track.addEventListener("scrollend", function() {{
-                var oneSetWidth = track.scrollWidth / 3;
-
-                // Kalau sudah masuk ke set ke-3, teleport ke set ke-1 (posisi sama)
-                if (track.scrollLeft >= oneSetWidth * 2) {{
-                    track.scrollLeft -= oneSetWidth;
-                }}
-                // Kalau sudah masuk ke set ke-1, teleport ke set ke-2 (posisi sama)
-                else if (track.scrollLeft < oneSetWidth) {{
-                    track.scrollLeft += oneSetWidth;
-                }}
-            }});
+                });
+        
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 500);
+            }
         </script>
         """
 
