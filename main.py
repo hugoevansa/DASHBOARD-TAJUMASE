@@ -1113,14 +1113,6 @@ else:
 
         <script>
             var track = document.getElementById("docs-track");
-            var cards = track.innerHTML;
-            
-            track.innerHTML = cards + cards + cards;
-            
-            window.addEventListener("load", function() {{
-                var oneSetWidth = track.scrollWidth / 3;
-                track.scrollLeft = oneSetWidth;
-            }});
 
             function scrollDocs(direction) {{
                 var card = track.querySelector(".doc-card");
@@ -1137,13 +1129,25 @@ else:
             }}
 
             track.addEventListener("scroll", function() {{
-                var oneSetWidth = track.scrollWidth / 3;
-                
-                if (track.scrollLeft >= oneSetWidth * 2) {{
-                    track.scrollLeft -= oneSetWidth;
+                var cards = track.querySelectorAll(".doc-card");
+                var first = cards[0];
+                var last = cards[cards.length - 1];
+                var card = first;
+
+                var style = window.getComputedStyle(track);
+                var gap = parseInt(style.columnGap || style.gap || 20);
+                var cardWidth = card.offsetWidth + gap;
+
+                // Scroll ke kanan melewati batas → pindahkan card pertama ke belakang
+                if (track.scrollLeft + track.offsetWidth >= track.scrollWidth - cardWidth) {{
+                    track.appendChild(first);
+                    track.scrollLeft -= cardWidth;
                 }}
-                if (track.scrollLeft <= 0) {{
-                    track.scrollLeft += oneSetWidth;
+
+                // Scroll ke kiri melewati batas → pindahkan card terakhir ke depan
+                if (track.scrollLeft <= cardWidth) {{
+                    track.insertBefore(last, track.firstChild);
+                    track.scrollLeft += cardWidth;
                 }}
             }});
         </script>
