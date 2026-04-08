@@ -431,31 +431,134 @@ with ts_col1:
 
     st.plotly_chart(fig_ts, use_container_width=True)
 
+# ======================
+# TOP 3 PUPUK TERBANYAK
+# ======================
+pupuk_rank_df = pd.DataFrame({
+    "Pupuk": ["Pupuk Phonska", "Pupuk Nitrea", "Pupuk Urea"],
+    "Jumlah": [
+        df_filtered["Pupuk Phonska"].sum(),
+        df_filtered["Pupuk Nitrea"].sum(),
+        df_filtered["Pupuk Urea"].sum()
+    ]
+}).sort_values("Jumlah", ascending=False).reset_index(drop=True)
+
+top1_name = pupuk_rank_df.loc[0, "Pupuk"] if len(pupuk_rank_df) > 0 else "-"
+top1_val  = pupuk_rank_df.loc[0, "Jumlah"] if len(pupuk_rank_df) > 0 else 0
+
+top2_name = pupuk_rank_df.loc[1, "Pupuk"] if len(pupuk_rank_df) > 1 else "-"
+top2_val  = pupuk_rank_df.loc[1, "Jumlah"] if len(pupuk_rank_df) > 1 else 0
+
+top3_name = pupuk_rank_df.loc[2, "Pupuk"] if len(pupuk_rank_df) > 2 else "-"
+top3_val  = pupuk_rank_df.loc[2, "Jumlah"] if len(pupuk_rank_df) > 2 else 0
+
 with ts_col2:
-    st.markdown("""
+    st.markdown("<div style='height: 54px;'></div>", unsafe_allow_html=True)
+
+    st.markdown(f"""
     <div style="
-        background: rgba(255,255,255,0.88);
-        border-radius: 16px;
-        padding: 18px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(240,246,240,0.92));
+        border-radius: 20px;
+        padding: 20px 18px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.06);
         min-height: 266px;
+        border: 1px solid rgba(141,169,141,0.22);
+        position: relative;
+        overflow: hidden;
     ">
+        <div style="
+            position:absolute;
+            top:-25px;
+            right:-25px;
+            width:90px;
+            height:90px;
+            border-radius:50%;
+            background: rgba(141,169,141,0.10);
+        "></div>
 
-    <h4 style="margin-top:0; color:#5f7a61;">Ringkasan</h4>
+        <div style="
+            position:absolute;
+            bottom:-20px;
+            left:-20px;
+            width:70px;
+            height:70px;
+            border-radius:50%;
+            background: rgba(95,122,97,0.08);
+        "></div>
 
-    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:15px;">
-        <div><b>Total Produksi:</b> {total_panen:,.0f} Kg</div>
-        <div><b>Total Anggaran:</b> Rp {anggaran:,.0f}</div>
-        <div><b>Rata-rata Bulanan:</b> {total_panen/12:,.0f} Kg</div>
-    </div>
+        <h4 style="
+            margin:0 0 16px 0;
+            color:#5f7a61;
+            font-size:18px;
+            font-weight:800;
+            letter-spacing:0.3px;
+        ">
+            🌿 Pupuk Terbanyak Dipakai
+        </h4>
 
-    <hr style="opacity:0.2;"/>
+        <div style="
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            position:relative;
+            z-index:2;
+        ">
 
-    <div style="font-size:13px;">
-        ⬆ Produksi tertinggi: <b>{bulanan_ts.loc[bulanan_ts['Produksi'].idxmax(),'Bulan_Short']}</b><br>
-        ⬇ Terendah: <b>{bulanan_ts.loc[bulanan_ts['Produksi'].idxmin(),'Bulan_Short']}</b>
-    </div>
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                background: rgba(255,255,255,0.82);
+                border-radius:14px;
+                padding:12px 14px;
+                border-left: 6px solid #5f7a61;
+            ">
+                <div>
+                    <div style="font-size:12px; color:#7a8d7a; font-weight:700;">#1 TERBANYAK</div>
+                    <div style="font-size:16px; color:#2f3e34; font-weight:800;">{top1_name}</div>
+                </div>
+                <div style="font-size:15px; font-weight:800; color:#5f7a61;">
+                    {top1_val:,.0f} Kg
+                </div>
+            </div>
 
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                background: rgba(255,255,255,0.78);
+                border-radius:14px;
+                padding:12px 14px;
+                border-left: 6px solid #8da98d;
+            ">
+                <div>
+                    <div style="font-size:12px; color:#7a8d7a; font-weight:700;">#2 TERBANYAK</div>
+                    <div style="font-size:15px; color:#2f3e34; font-weight:800;">{top2_name}</div>
+                </div>
+                <div style="font-size:14px; font-weight:800; color:#6b8f71;">
+                    {top2_val:,.0f} Kg
+                </div>
+            </div>
+
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                background: rgba(255,255,255,0.74);
+                border-radius:14px;
+                padding:12px 14px;
+                border-left: 6px solid #b8ccb8;
+            ">
+                <div>
+                    <div style="font-size:12px; color:#7a8d7a; font-weight:700;">#3 TERBANYAK</div>
+                    <div style="font-size:15px; color:#2f3e34; font-weight:800;">{top3_name}</div>
+                </div>
+                <div style="font-size:14px; font-weight:800; color:#7b9b7d;">
+                    {top3_val:,.0f} Kg
+                </div>
+            </div>
+
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
