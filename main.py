@@ -455,7 +455,7 @@ top3_val  = pupuk_rank_df.loc[2, "Jumlah"] if len(pupuk_rank_df) > 2 else 0
 with ts_col2:
     st.markdown("<div style='height: 54px;'></div>", unsafe_allow_html=True)
 
-    st.markdown(f"""
+    pupuk_html = textwrap.dedent(f"""
     <style>
     .pupuk-summary-box {{
         background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(240,246,240,0.92));
@@ -555,9 +555,9 @@ with ts_col2:
             <div class="pupuk-rank-value value-3">{top3_val:,.0f} Kg</div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(pupuk_html, unsafe_allow_html=True)
     
 # ======================
 # WILAYAH
