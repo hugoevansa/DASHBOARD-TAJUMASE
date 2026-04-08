@@ -24,6 +24,15 @@ def image_to_base64_local(image_path):
     if ext == "jpg":
         ext = "jpeg"
     return f"data:image/{ext};base64,{encoded}"
+    
+def audio_to_base64_local(audio_path):
+    path = Path(audio_path)
+    if not path.exists():
+        return ""
+    with open(path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    ext = path.suffix.lower().replace(".", "")
+    return f"data:audio/{ext};base64,{encoded}"
 
 pattern_bg = image_to_base64_local("Pattern_PI.png")
 
@@ -128,6 +137,7 @@ df = pd.read_excel("data_panen_dummy.xlsx")
 # ======================
 logo_path = "Dokumentasi/Pupuk4.png"  # ← Ganti sesuai nama file logo kamu
 logo_b64 = image_to_base64_local(logo_path)
+musik_b64 = audio_to_base64_local("Dokumentasi/Musik4.mp3")
 
 # ======================
 # HEADER + FILTER
@@ -323,6 +333,182 @@ with c3:
     )
 
     st.plotly_chart(fig_compare, use_container_width=True)
+
+# ======================
+# FLOATING MUSIC PLAYER
+# ======================
+if musik_b64:
+    music_player_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {{
+                margin: 0;
+                background: transparent;
+                font-family: Arial, sans-serif;
+            }}
+
+            .music-wrap {{
+                position: fixed;
+                right: 18px;
+                bottom: 18px;
+                z-index: 9999;
+                width: 240px;
+                background: rgba(255,255,255,0.96);
+                border: 1px solid rgba(141,169,141,0.25);
+                border-radius: 18px;
+                box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+                padding: 12px 14px;
+                backdrop-filter: blur(10px);
+            }}
+
+            .music-title {{
+                font-size: 14px;
+                font-weight: 800;
+                color: #5f7a61;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }}
+
+            .music-controls {{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }}
+
+            .mute-btn {{
+                border: none;
+                border-radius: 10px;
+                background: #8da98d;
+                color: white;
+                font-size: 13px;
+                font-weight: 700;
+                padding: 8px 10px;
+                cursor: pointer;
+                min-width: 74px;
+                transition: 0.2s ease;
+            }}
+
+            .mute-btn:hover {{
+                background: #6b8f71;
+            }}
+
+            .volume-box {{
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }}
+
+            .volume-label {{
+                font-size: 11px;
+                color: #6b7f6f;
+                font-weight: 700;
+            }}
+
+            .volume-range {{
+                width: 100%;
+                accent-color: #8da98d;
+                cursor: pointer;
+            }}
+
+            .volume-value {{
+                font-size: 11px;
+                font-weight: 700;
+                color: #5f7a61;
+                text-align: right;
+            }}
+
+            .hint {{
+                font-size: 10px;
+                color: #90a090;
+                margin-top: 8px;
+                line-height: 1.3;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="music-wrap">
+            <div class="music-title">🎵 Musik Dashboard</div>
+
+            <audio id="bg-music" loop>
+                <source src="{musik_b64}" type="audio/mpeg">
+            </audio>
+
+            <div class="music-controls">
+                <button id="muteBtn" class="mute-btn">🔊 On</button>
+
+                <div class="volume-box">
+                    <div class="volume-label">Volume</div>
+                    <input id="volumeSlider" class="volume-range" type="range" min="0" max="100" value="35">
+                    <div id="volumeValue" class="volume-value">35%</div>
+                </div>
+            </div>
+
+            <div class="hint">
+                Musik mungkin perlu interaksi pertama pada browser untuk mulai diputar.
+            </div>
+        </div>
+
+        <script>
+            const audio = document.getElementById("bg-music");
+            const muteBtn = document.getElementById("muteBtn");
+            const volumeSlider = document.getElementById("volumeSlider");
+            const volumeValue = document.getElementById("volumeValue");
+
+            audio.volume = 0.35;
+            audio.muted = false;
+
+            function updateVolumeUI(val) {{
+                volumeValue.textContent = val + "%";
+                if (parseInt(val) === 0 || audio.muted) {{
+                    muteBtn.textContent = "🔇 Off";
+                }} else {{
+                    muteBtn.textContent = "🔊 On";
+                }}
+            }}
+
+            volumeSlider.addEventListener("input", function() {{
+                const vol = parseInt(this.value) / 100;
+                audio.volume = vol;
+                audio.muted = vol === 0;
+                updateVolumeUI(this.value);
+            }});
+
+            muteBtn.addEventListener("click", async function() {{
+                if (audio.paused) {{
+                    try {{
+                        await audio.play();
+                    }} catch (e) {{
+                        console.log("Autoplay blocked until user interaction.", e);
+                    }}
+                }}
+
+                audio.muted = !audio.muted;
+                updateVolumeUI(audio.muted ? 0 : volumeSlider.value);
+            }});
+
+            // coba autoplay pelan
+            window.addEventListener("load", async function() {{
+                try {{
+                    await audio.play();
+                }} catch (e) {{
+                    console.log("Autoplay blocked by browser.");
+                }}
+            }});
+
+            updateVolumeUI(35);
+        </script>
+    </body>
+    </html>
+    """
+
+    components.html(music_player_html, height=110)
+else:
+    st.warning("File musik Dokumentasi/Musik4.mp3 tidak ditemukan.")
 
 # ======================
 # TIME SERIES + KETERANGAN
