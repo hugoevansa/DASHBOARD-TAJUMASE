@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import base64
 from pathlib import Path
+import textwrap
 import streamlit.components.v1 as components
 
 # CONFIG
