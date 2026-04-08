@@ -455,107 +455,105 @@ top3_val  = pupuk_rank_df.loc[2, "Jumlah"] if len(pupuk_rank_df) > 2 else 0
 with ts_col2:
     st.markdown("<div style='height: 54px;'></div>", unsafe_allow_html=True)
 
-    st.markdown("""
+    st.markdown(f"""
     <style>
-    .pupuk-summary-box {
+    .pupuk-summary-box {{
         background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(240,246,240,0.92));
         border-radius: 20px;
         padding: 20px 18px;
         box-shadow: 0 8px 22px rgba(0,0,0,0.06);
         min-height: 266px;
         border: 1px solid rgba(141,169,141,0.22);
-    }
+        position: relative;
+        overflow: hidden;
+    }}
 
-    .pupuk-summary-title {
+    .pupuk-summary-title {{
         margin: 0 0 16px 0;
         color: #5f7a61;
         font-size: 18px;
         font-weight: 800;
         letter-spacing: 0.3px;
-    }
+    }}
 
-    .pupuk-rank-card {
+    .pupuk-rank-card {{
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-radius: 14px;
         padding: 12px 14px;
         margin-bottom: 12px;
-    }
+    }}
 
-    .pupuk-rank-left {
+    .pupuk-rank-left {{
         display: flex;
         flex-direction: column;
-    }
+    }}
 
-    .pupuk-rank-label {
+    .pupuk-rank-label {{
         font-size: 12px;
         color: #7a8d7a;
         font-weight: 700;
-    }
+    }}
 
-    .pupuk-rank-name {
+    .pupuk-rank-name {{
         font-size: 15px;
         color: #2f3e34;
         font-weight: 800;
-    }
+    }}
 
-    .pupuk-rank-value {
+    .pupuk-rank-value {{
         font-size: 14px;
         font-weight: 800;
-    }
+    }}
 
-    .rank-1 {
+    .rank-1 {{
         background: rgba(255,255,255,0.84);
         border-left: 6px solid #5f7a61;
-    }
+    }}
 
-    .rank-2 {
+    .rank-2 {{
         background: rgba(255,255,255,0.80);
         border-left: 6px solid #8da98d;
-    }
+    }}
 
-    .rank-3 {
+    .rank-3 {{
         background: rgba(255,255,255,0.76);
         border-left: 6px solid #b8ccb8;
-    }
+        margin-bottom: 0;
+    }}
 
-    .value-1 { color: #5f7a61; }
-    .value-2 { color: #6b8f71; }
-    .value-3 { color: #7b9b7d; }
+    .value-1 {{ color: #5f7a61; }}
+    .value-2 {{ color: #6b8f71; }}
+    .value-3 {{ color: #7b9b7d; }}
     </style>
-    """, unsafe_allow_html=True)
 
-    st.markdown('<div class="pupuk-summary-box">', unsafe_allow_html=True)
-    st.markdown('<div class="pupuk-summary-title">🌿 Pupuk Terbanyak Dipakai</div>', unsafe_allow_html=True)
+    <div class="pupuk-summary-box">
+        <div class="pupuk-summary-title">🌿 Pupuk Terbanyak Dipakai</div>
 
-    st.markdown(f"""
-    <div class="pupuk-rank-card rank-1">
-        <div class="pupuk-rank-left">
-            <div class="pupuk-rank-label">#1 TERBANYAK</div>
-            <div class="pupuk-rank-name">{top1_name}</div>
+        <div class="pupuk-rank-card rank-1">
+            <div class="pupuk-rank-left">
+                <div class="pupuk-rank-label">#1 TERBANYAK</div>
+                <div class="pupuk-rank-name">{top1_name}</div>
+            </div>
+            <div class="pupuk-rank-value value-1">{top1_val:,.0f} Kg</div>
         </div>
-        <div class="pupuk-rank-value value-1">{top1_val:,.0f} Kg</div>
-    </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div class="pupuk-rank-card rank-2">
-        <div class="pupuk-rank-left">
-            <div class="pupuk-rank-label">#2 TERBANYAK</div>
-            <div class="pupuk-rank-name">{top2_name}</div>
+        <div class="pupuk-rank-card rank-2">
+            <div class="pupuk-rank-left">
+                <div class="pupuk-rank-label">#2 TERBANYAK</div>
+                <div class="pupuk-rank-name">{top2_name}</div>
+            </div>
+            <div class="pupuk-rank-value value-2">{top2_val:,.0f} Kg</div>
         </div>
-        <div class="pupuk-rank-value value-2">{top2_val:,.0f} Kg</div>
-    </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div class="pupuk-rank-card rank-3">
-        <div class="pupuk-rank-left">
-            <div class="pupuk-rank-label">#3 TERBANYAK</div>
-            <div class="pupuk-rank-name">{top3_name}</div>
+        <div class="pupuk-rank-card rank-3">
+            <div class="pupuk-rank-left">
+                <div class="pupuk-rank-label">#3 TERBANYAK</div>
+                <div class="pupuk-rank-name">{top3_name}</div>
+            </div>
+            <div class="pupuk-rank-value value-3">{top3_val:,.0f} Kg</div>
         </div>
-        <div class="pupuk-rank-value value-3">{top3_val:,.0f} Kg</div>
     </div>
     """, unsafe_allow_html=True)
 
