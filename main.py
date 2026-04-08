@@ -455,112 +455,111 @@ top3_val  = pupuk_rank_df.loc[2, "Jumlah"] if len(pupuk_rank_df) > 2 else 0
 with ts_col2:
     st.markdown("<div style='height: 54px;'></div>", unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div style="
+    st.markdown("""
+    <style>
+    .pupuk-summary-box {
         background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(240,246,240,0.92));
         border-radius: 20px;
         padding: 20px 18px;
         box-shadow: 0 8px 22px rgba(0,0,0,0.06);
         min-height: 266px;
         border: 1px solid rgba(141,169,141,0.22);
-        position: relative;
-        overflow: hidden;
-    ">
-        <div style="
-            position:absolute;
-            top:-25px;
-            right:-25px;
-            width:90px;
-            height:90px;
-            border-radius:50%;
-            background: rgba(141,169,141,0.10);
-        "></div>
+    }
 
-        <div style="
-            position:absolute;
-            bottom:-20px;
-            left:-20px;
-            width:70px;
-            height:70px;
-            border-radius:50%;
-            background: rgba(95,122,97,0.08);
-        "></div>
+    .pupuk-summary-title {
+        margin: 0 0 16px 0;
+        color: #5f7a61;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+    }
 
-        <h4 style="
-            margin:0 0 16px 0;
-            color:#5f7a61;
-            font-size:18px;
-            font-weight:800;
-            letter-spacing:0.3px;
-        ">
-            🌿 Pupuk Terbanyak Dipakai
-        </h4>
+    .pupuk-rank-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+    }
 
-        <div style="
-            display:flex;
-            flex-direction:column;
-            gap:12px;
-            position:relative;
-            z-index:2;
-        ">
+    .pupuk-rank-left {
+        display: flex;
+        flex-direction: column;
+    }
 
-            <div style="
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                background: rgba(255,255,255,0.82);
-                border-radius:14px;
-                padding:12px 14px;
-                border-left: 6px solid #5f7a61;
-            ">
-                <div>
-                    <div style="font-size:12px; color:#7a8d7a; font-weight:700;">#1 TERBANYAK</div>
-                    <div style="font-size:16px; color:#2f3e34; font-weight:800;">{top1_name}</div>
-                </div>
-                <div style="font-size:15px; font-weight:800; color:#5f7a61;">
-                    {top1_val:,.0f} Kg
-                </div>
-            </div>
+    .pupuk-rank-label {
+        font-size: 12px;
+        color: #7a8d7a;
+        font-weight: 700;
+    }
 
-            <div style="
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                background: rgba(255,255,255,0.78);
-                border-radius:14px;
-                padding:12px 14px;
-                border-left: 6px solid #8da98d;
-            ">
-                <div>
-                    <div style="font-size:12px; color:#7a8d7a; font-weight:700;">#2 TERBANYAK</div>
-                    <div style="font-size:15px; color:#2f3e34; font-weight:800;">{top2_name}</div>
-                </div>
-                <div style="font-size:14px; font-weight:800; color:#6b8f71;">
-                    {top2_val:,.0f} Kg
-                </div>
-            </div>
+    .pupuk-rank-name {
+        font-size: 15px;
+        color: #2f3e34;
+        font-weight: 800;
+    }
 
-            <div style="
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                background: rgba(255,255,255,0.74);
-                border-radius:14px;
-                padding:12px 14px;
-                border-left: 6px solid #b8ccb8;
-            ">
-                <div>
-                    <div style="font-size:12px; color:#7a8d7a; font-weight:700;">#3 TERBANYAK</div>
-                    <div style="font-size:15px; color:#2f3e34; font-weight:800;">{top3_name}</div>
-                </div>
-                <div style="font-size:14px; font-weight:800; color:#7b9b7d;">
-                    {top3_val:,.0f} Kg
-                </div>
-            </div>
+    .pupuk-rank-value {
+        font-size: 14px;
+        font-weight: 800;
+    }
 
+    .rank-1 {
+        background: rgba(255,255,255,0.84);
+        border-left: 6px solid #5f7a61;
+    }
+
+    .rank-2 {
+        background: rgba(255,255,255,0.80);
+        border-left: 6px solid #8da98d;
+    }
+
+    .rank-3 {
+        background: rgba(255,255,255,0.76);
+        border-left: 6px solid #b8ccb8;
+    }
+
+    .value-1 { color: #5f7a61; }
+    .value-2 { color: #6b8f71; }
+    .value-3 { color: #7b9b7d; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="pupuk-summary-box">', unsafe_allow_html=True)
+    st.markdown('<div class="pupuk-summary-title">🌿 Pupuk Terbanyak Dipakai</div>', unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="pupuk-rank-card rank-1">
+        <div class="pupuk-rank-left">
+            <div class="pupuk-rank-label">#1 TERBANYAK</div>
+            <div class="pupuk-rank-name">{top1_name}</div>
         </div>
+        <div class="pupuk-rank-value value-1">{top1_val:,.0f} Kg</div>
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="pupuk-rank-card rank-2">
+        <div class="pupuk-rank-left">
+            <div class="pupuk-rank-label">#2 TERBANYAK</div>
+            <div class="pupuk-rank-name">{top2_name}</div>
+        </div>
+        <div class="pupuk-rank-value value-2">{top2_val:,.0f} Kg</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="pupuk-rank-card rank-3">
+        <div class="pupuk-rank-left">
+            <div class="pupuk-rank-label">#3 TERBANYAK</div>
+            <div class="pupuk-rank-name">{top3_name}</div>
+        </div>
+        <div class="pupuk-rank-value value-3">{top3_val:,.0f} Kg</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
     
 # ======================
 # WILAYAH
