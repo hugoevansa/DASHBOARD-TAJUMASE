@@ -456,109 +456,151 @@ top3_val  = pupuk_rank_df.loc[2, "Jumlah"] if len(pupuk_rank_df) > 2 else 0
 with ts_col2:
     st.markdown("<div style='height: 54px;'></div>", unsafe_allow_html=True)
 
-    pupuk_html = textwrap.dedent(f"""
-    <style>
-    .pupuk-summary-box {{
-        background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(240,246,240,0.92));
-        border-radius: 20px;
-        padding: 20px 18px;
-        box-shadow: 0 8px 22px rgba(0,0,0,0.06);
-        min-height: 266px;
-        border: 1px solid rgba(141,169,141,0.22);
-        position: relative;
-        overflow: hidden;
-    }}
+    pupuk_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {{
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: transparent;
+            }}
 
-    .pupuk-summary-title {{
-        margin: 0 0 16px 0;
-        color: #5f7a61;
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: 0.3px;
-    }}
+            .pupuk-summary-box {{
+                background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,246,240,0.96));
+                border-radius: 20px;
+                padding: 20px 18px;
+                box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+                min-height: 266px;
+                border: 1px solid rgba(141,169,141,0.22);
+                position: relative;
+                overflow: hidden;
+                box-sizing: border-box;
+            }}
 
-    .pupuk-rank-card {{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-radius: 14px;
-        padding: 12px 14px;
-        margin-bottom: 12px;
-    }}
+            .pupuk-summary-box::before {{
+                content: "";
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                background: rgba(141,169,141,0.10);
+            }}
 
-    .pupuk-rank-left {{
-        display: flex;
-        flex-direction: column;
-    }}
+            .pupuk-summary-box::after {{
+                content: "";
+                position: absolute;
+                bottom: -20px;
+                left: -20px;
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                background: rgba(95,122,97,0.08);
+            }}
 
-    .pupuk-rank-label {{
-        font-size: 12px;
-        color: #7a8d7a;
-        font-weight: 700;
-    }}
+            .pupuk-summary-title {{
+                margin: 0 0 16px 0;
+                color: #5f7a61;
+                font-size: 18px;
+                font-weight: 800;
+                letter-spacing: 0.3px;
+                position: relative;
+                z-index: 2;
+            }}
 
-    .pupuk-rank-name {{
-        font-size: 15px;
-        color: #2f3e34;
-        font-weight: 800;
-    }}
+            .pupuk-rank-card {{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 14px;
+                padding: 12px 14px;
+                margin-bottom: 12px;
+                position: relative;
+                z-index: 2;
+                box-sizing: border-box;
+            }}
 
-    .pupuk-rank-value {{
-        font-size: 14px;
-        font-weight: 800;
-    }}
+            .pupuk-rank-left {{
+                display: flex;
+                flex-direction: column;
+            }}
 
-    .rank-1 {{
-        background: rgba(255,255,255,0.84);
-        border-left: 6px solid #5f7a61;
-    }}
+            .pupuk-rank-label {{
+                font-size: 12px;
+                color: #7a8d7a;
+                font-weight: 700;
+                margin-bottom: 4px;
+            }}
 
-    .rank-2 {{
-        background: rgba(255,255,255,0.80);
-        border-left: 6px solid #8da98d;
-    }}
+            .pupuk-rank-name {{
+                font-size: 16px;
+                color: #2f3e34;
+                font-weight: 800;
+            }}
 
-    .rank-3 {{
-        background: rgba(255,255,255,0.76);
-        border-left: 6px solid #b8ccb8;
-        margin-bottom: 0;
-    }}
+            .pupuk-rank-value {{
+                font-size: 14px;
+                font-weight: 800;
+                white-space: nowrap;
+            }}
 
-    .value-1 {{ color: #5f7a61; }}
-    .value-2 {{ color: #6b8f71; }}
-    .value-3 {{ color: #7b9b7d; }}
-    </style>
+            .rank-1 {{
+                background: rgba(255,255,255,0.86);
+                border-left: 6px solid #5f7a61;
+            }}
 
-    <div class="pupuk-summary-box">
-        <div class="pupuk-summary-title">🌿 Pupuk Terbanyak Dipakai</div>
+            .rank-2 {{
+                background: rgba(255,255,255,0.82);
+                border-left: 6px solid #8da98d;
+            }}
 
-        <div class="pupuk-rank-card rank-1">
-            <div class="pupuk-rank-left">
-                <div class="pupuk-rank-label">#1 TERBANYAK</div>
-                <div class="pupuk-rank-name">{top1_name}</div>
+            .rank-3 {{
+                background: rgba(255,255,255,0.78);
+                border-left: 6px solid #b8ccb8;
+                margin-bottom: 0;
+            }}
+
+            .value-1 {{ color: #5f7a61; }}
+            .value-2 {{ color: #6b8f71; }}
+            .value-3 {{ color: #7b9b7d; }}
+        </style>
+    </head>
+    <body>
+        <div class="pupuk-summary-box">
+            <div class="pupuk-summary-title">🌿 Pupuk Terbanyak Dipakai</div>
+
+            <div class="pupuk-rank-card rank-1">
+                <div class="pupuk-rank-left">
+                    <div class="pupuk-rank-label">#1 TERBANYAK</div>
+                    <div class="pupuk-rank-name">{top1_name}</div>
+                </div>
+                <div class="pupuk-rank-value value-1">{top1_val:,.0f} Kg</div>
             </div>
-            <div class="pupuk-rank-value value-1">{top1_val:,.0f} Kg</div>
-        </div>
 
-        <div class="pupuk-rank-card rank-2">
-            <div class="pupuk-rank-left">
-                <div class="pupuk-rank-label">#2 TERBANYAK</div>
-                <div class="pupuk-rank-name">{top2_name}</div>
+            <div class="pupuk-rank-card rank-2">
+                <div class="pupuk-rank-left">
+                    <div class="pupuk-rank-label">#2 TERBANYAK</div>
+                    <div class="pupuk-rank-name">{top2_name}</div>
+                </div>
+                <div class="pupuk-rank-value value-2">{top2_val:,.0f} Kg</div>
             </div>
-            <div class="pupuk-rank-value value-2">{top2_val:,.0f} Kg</div>
-        </div>
 
-        <div class="pupuk-rank-card rank-3">
-            <div class="pupuk-rank-left">
-                <div class="pupuk-rank-label">#3 TERBANYAK</div>
-                <div class="pupuk-rank-name">{top3_name}</div>
+            <div class="pupuk-rank-card rank-3">
+                <div class="pupuk-rank-left">
+                    <div class="pupuk-rank-label">#3 TERBANYAK</div>
+                    <div class="pupuk-rank-name">{top3_name}</div>
+                </div>
+                <div class="pupuk-rank-value value-3">{top3_val:,.0f} Kg</div>
             </div>
-            <div class="pupuk-rank-value value-3">{top3_val:,.0f} Kg</div>
         </div>
-    </div>
-    """)
+    </body>
+    </html>
+    """
 
-    st.markdown(pupuk_html, unsafe_allow_html=True)
+    components.html(pupuk_html, height=330, scrolling=False)
     
 # ======================
 # WILAYAH
